@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "278153046142",
+    "project_id": "reway-4d031",
+    "storage_bucket": "reway-4d031.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278153046142:android:0454e64b9578236a99502f",
+        "android_client_info": {
+          "package_name": "com.example.reway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278153046142-4fn28ff80obiruqf6kr6lt6isope8uvg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkYZh38yYBIiEJNnW4SXxR3ln6bbuqySU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278153046142-4fn28ff80obiruqf6kr6lt6isope8uvg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
