@@ -59,7 +59,7 @@ class _MapsScreenState extends State<MapsScreen> {
                   onPressed: (() {
                     Navigator.pop(context);
                   }),
-                  icon: Icon(Icons.arrow_back_ios))),
+                  icon: const Icon(Icons.arrow_back_ios))),
         ],
       ),
       bottomSheet: GestureDetector(
@@ -75,22 +75,22 @@ class _MapsScreenState extends State<MapsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Select Location',
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 TextFormField(
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(suffixIcon: Icon(Icons.note_alt)),
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(suffixIcon: Icon(Icons.note_alt)),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 18,
                 ),
                 Row(
                   children: [
                     Expanded(
                       child: RadioListTile(
-                        title: Text('Home',style: TextStyle(fontSize: 10),),
+                        title: const Text('Home',style: TextStyle(fontSize: 10),),
                         value: 'home',
                         groupValue: location,
                         onChanged: (value) {
@@ -102,7 +102,7 @@ class _MapsScreenState extends State<MapsScreen> {
                     ),
                     Expanded(
                       child: RadioListTile(
-                        title: Text('Work',style: TextStyle(fontSize: 10),),
+                        title: const Text('Work',style: TextStyle(fontSize: 10),),
                         value: 'work',
                         groupValue: location,
                         onChanged: (value) {
@@ -114,7 +114,7 @@ class _MapsScreenState extends State<MapsScreen> {
                     ),
                     Expanded(
                       child: RadioListTile(
-                        title: Text('Others',style: TextStyle(fontSize: 10),),
+                        title: const Text('Others',style: TextStyle(fontSize: 10),),
                         value: 'others',
                         groupValue: location,
                         onChanged: (value) {
@@ -126,7 +126,7 @@ class _MapsScreenState extends State<MapsScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 Container(
@@ -135,8 +135,8 @@ class _MapsScreenState extends State<MapsScreen> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/home');
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(14.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(14.0),
                       child: Text(
                         'Confirm',
                         style: TextStyle(fontSize: 18),

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import '../custom/bottom_navbar.dart';
-
-class MyFavorites extends StatefulWidget {
-  const MyFavorites({super.key});
+class PickupScreen extends StatefulWidget {
+  const PickupScreen({super.key});
 
   @override
-  State<MyFavorites> createState() => _MyFavoritesState();
+  State<PickupScreen> createState() => _PickupScreenState();
 }
 
-class _MyFavoritesState extends State<MyFavorites> {
+class _PickupScreenState extends State<PickupScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,10 +25,10 @@ class _MyFavoritesState extends State<MyFavorites> {
               onPressed: () {
                 Navigator.pushNamed(context, '/map_screen');
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.location_pin,
               ),
-              color: Color.fromARGB(255, 105, 105, 105),
+              color: const Color.fromARGB(255, 105, 105, 105),
             )
           ],
           backgroundColor: Colors.white,
@@ -38,13 +37,13 @@ class _MyFavoritesState extends State<MyFavorites> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               color: Color.fromARGB(255, 105, 105, 105),
             ),
           ),
-          title: Text(
-            'Auctions',
+          title: const Text(
+            'Scheduled Pickups',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.black, fontSize: 25),
           ),
@@ -56,7 +55,7 @@ class _MyFavoritesState extends State<MyFavorites> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       flex: 4,
                       child: TextField(
                         decoration: InputDecoration(
@@ -76,18 +75,18 @@ class _MyFavoritesState extends State<MyFavorites> {
                         style: TextStyle(color: Colors.black, fontSize: 25),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     Container(
                       height: 50,
                       width: 50,
-                      color: Color.fromARGB(255, 212, 212, 212),
+                      color: const Color.fromARGB(255, 212, 212, 212),
                       child: IconButton(
                         iconSize: 30,
-                        color: Color.fromARGB(255, 104, 104, 104),
+                        color: const Color.fromARGB(255, 104, 104, 104),
                         onPressed: () {},
-                        icon: Icon(Icons.filter_alt),
+                        icon: const Icon(Icons.filter_alt),
                       ),
                     )
                   ],
@@ -96,7 +95,7 @@ class _MyFavoritesState extends State<MyFavorites> {
               Expanded(
                 child: ListView.builder(
                   itemCount: 10,
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
 // shrinkWrap: true,
                   itemBuilder: ((context, index) {
                     return Padding(
@@ -119,24 +118,26 @@ class _MyFavoritesState extends State<MyFavorites> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.stretch,
+                                        CrossAxisAlignment.stretch,
                                     children: [
-                                      Image.asset(
-                                        'assets/image/img_1.png',
+                                      Image.network(
+                                        'https://blog.ipleaders.in/wp-content/uploads/2020/02/tata_communication_hq_660_100120025251.jpg',
                                         height: 90,
                                         fit: BoxFit.fill,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       RatingBar.builder(
-                                        itemSize: 20,
+                                        itemSize:
+                                            MediaQuery.of(context).size.width /
+                                                22,
                                         initialRating: 3,
                                         minRating: 1,
                                         direction: Axis.horizontal,
                                         allowHalfRating: true,
                                         itemCount: 5,
-                                        itemBuilder: (context, _) => Icon(
+                                        itemBuilder: (context, _) => const Icon(
                                           Icons.star,
                                           color: Colors.amber,
                                         ),
@@ -148,7 +149,7 @@ class _MyFavoritesState extends State<MyFavorites> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
@@ -157,31 +158,27 @@ class _MyFavoritesState extends State<MyFavorites> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        child: Text(
-                                          'Hi-Tech Scrap Dealer',
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                      Text(
+                                        'CYber Mobile Repairer',
+                                        style: GoogleFonts.inter(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                       SizedBox(
-                                        height: 15,
+                                        height: 7,
                                       ),
+                                      Text('A-47 West Patel Nagar'),
+                                      const Text(
+                                          'Description : Total - 70Kgs, 3 Refrigerators, 20 Smartphones....'),
                                       SizedBox(
-                                        child: Text('A-47 West Patel Nagar'),
+                                        height: 12,
                                       ),
-                                      SizedBox(
-                                        child: Text('Description : Total - 70Kgs, 3 Refrigerators, 20 Smartphones....'),
-                                      ),
-                                      SizedBox(
-                                        child: Text(''),
-                                      ),
-                                      SizedBox(
-                                        child: Text('Minimum Bid : Rs.50000')
-                                      )
+                                      Text('Minimum Bid : Rs.50000',
+                                          style: GoogleFonts.inter(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500)),
                                     ],
                                   ),
                                 ),
@@ -197,10 +194,7 @@ class _MyFavoritesState extends State<MyFavorites> {
             ],
           ),
         ),
-
-        bottomNavigationBar: BottomNavbar(),
       ),
     );
   }
 }
-

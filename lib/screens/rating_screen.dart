@@ -40,12 +40,12 @@ class _RatingScreenState extends State<RatingScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               color: Color.fromARGB(255, 105, 105, 105),
             ),
           ),
-          title: Text(
+          title: const Text(
             'Rating',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.black, fontSize: 25),
@@ -59,20 +59,20 @@ class _RatingScreenState extends State<RatingScreen> {
                 Container(
                   child: Column(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.account_circle_outlined,
                         size: 170,
                         color: Colors.green,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Text(
+                      const Text(
                         'Technology Recyclers',
                         style: TextStyle(fontSize: 28),
                       ),
                       RatingBar.builder(
-                        itemPadding: EdgeInsets.only(right: 10),
+                        itemPadding: const EdgeInsets.only(right: 10),
                         itemSize: 30,
                         initialRating: 3,
                         minRating: 1,
@@ -80,7 +80,7 @@ class _RatingScreenState extends State<RatingScreen> {
                         allowHalfRating: true,
                         itemCount: 5,
                         itemBuilder: (context, _) {
-                          return Icon(
+                          return const Icon(
                             Icons.star,
                             color: Colors.amber,
                           );
@@ -92,19 +92,19 @@ class _RatingScreenState extends State<RatingScreen> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Form(
                     child: Column(
                   children: [
-                    Text(
+                    const Text(
                       'Leave your feedback here',
                       style: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 102, 102, 102)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Wrap(
@@ -112,24 +112,24 @@ class _RatingScreenState extends State<RatingScreen> {
                       direction: Axis.horizontal,
                       children: [
                         Container(
-                          margin: EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(8),
                           width: 110,
                           child: OutlinedButton(
                             style: isSelected
                                 ? OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 155, 93, 0),
+                                        const Color.fromARGB(255, 155, 93, 0),
                                     backgroundColor:
-                                        Color.fromARGB(168, 248, 177, 71),
+                                        const Color.fromARGB(168, 248, 177, 71),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
                                   )
                                 : OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 44, 44, 44),
+                                        const Color.fromARGB(255, 44, 44, 44),
                                     backgroundColor:
-                                        Color.fromARGB(255, 200, 200, 200),
+                                        const Color.fromARGB(255, 200, 200, 200),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
@@ -141,31 +141,31 @@ class _RatingScreenState extends State<RatingScreen> {
                             },
                             child: Row(
                               children: [
-                                Icon(Icons.check),
-                                Text('Service'),
+                                const Icon(Icons.check),
+                                const Text('Service'),
                               ],
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(8),
                           width: 110,
                           child: OutlinedButton(
                             style: isSelected
                                 ? OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 155, 93, 0),
+                                        const Color.fromARGB(255, 155, 93, 0),
                                     backgroundColor:
-                                        Color.fromARGB(168, 248, 177, 71),
+                                        const Color.fromARGB(168, 248, 177, 71),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
                                   )
                                 : OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 44, 44, 44),
+                                        const Color.fromARGB(255, 44, 44, 44),
                                     backgroundColor:
-                                        Color.fromARGB(255, 200, 200, 200),
+                                        const Color.fromARGB(255, 200, 200, 200),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
@@ -177,31 +177,31 @@ class _RatingScreenState extends State<RatingScreen> {
                             },
                             child: Row(
                               children: [
-                                Icon(Icons.check),
-                                Text('Service'),
+                                const Icon(Icons.check),
+                                const Text('Service'),
                               ],
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(8),
                           width: 110,
                           child: OutlinedButton(
                             style: isSelected
                                 ? OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 155, 93, 0),
+                                        const Color.fromARGB(255, 155, 93, 0),
                                     backgroundColor:
-                                        Color.fromARGB(168, 248, 177, 71),
+                                        const Color.fromARGB(168, 248, 177, 71),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
                                   )
                                 : OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 44, 44, 44),
+                                        const Color.fromARGB(255, 44, 44, 44),
                                     backgroundColor:
-                                        Color.fromARGB(255, 200, 200, 200),
+                                        const Color.fromARGB(255, 200, 200, 200),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
@@ -213,31 +213,31 @@ class _RatingScreenState extends State<RatingScreen> {
                             },
                             child: Row(
                               children: [
-                                Icon(Icons.check),
-                                Text('Service'),
+                                const Icon(Icons.check),
+                                const Text('Service'),
                               ],
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(8),
                           width: 110,
                           child: OutlinedButton(
                             style: isSelected
                                 ? OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 155, 93, 0),
+                                        const Color.fromARGB(255, 155, 93, 0),
                                     backgroundColor:
-                                        Color.fromARGB(168, 248, 177, 71),
+                                        const Color.fromARGB(168, 248, 177, 71),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
                                   )
                                 : OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 44, 44, 44),
+                                        const Color.fromARGB(255, 44, 44, 44),
                                     backgroundColor:
-                                        Color.fromARGB(255, 200, 200, 200),
+                                        const Color.fromARGB(255, 200, 200, 200),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
@@ -249,31 +249,31 @@ class _RatingScreenState extends State<RatingScreen> {
                             },
                             child: Row(
                               children: [
-                                Icon(Icons.check),
-                                Text('Service'),
+                                const Icon(Icons.check),
+                                const Text('Service'),
                               ],
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(8),
                           width: 110,
                           child: OutlinedButton(
                             style: isSelected
                                 ? OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 155, 93, 0),
+                                        const Color.fromARGB(255, 155, 93, 0),
                                     backgroundColor:
-                                        Color.fromARGB(168, 248, 177, 71),
+                                        const Color.fromARGB(168, 248, 177, 71),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
                                   )
                                 : OutlinedButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromARGB(255, 44, 44, 44),
+                                        const Color.fromARGB(255, 44, 44, 44),
                                     backgroundColor:
-                                        Color.fromARGB(255, 200, 200, 200),
+                                        const Color.fromARGB(255, 200, 200, 200),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
@@ -285,23 +285,23 @@ class _RatingScreenState extends State<RatingScreen> {
                             },
                             child: Row(
                               children: [
-                                Icon(Icons.check),
-                                Text('Service'),
+                                const Icon(Icons.check),
+                                const Text('Service'),
                               ],
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 30),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 30),
                             child: Text(
                               'Care to share more?',
                               style: TextStyle(
@@ -317,7 +317,7 @@ class _RatingScreenState extends State<RatingScreen> {
                               maxLines: 6,
 
                               // controller: _controllerFeedback,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText:
                                     'Please provide your valuable feedback',
                                 hintStyle: TextStyle(
@@ -331,7 +331,7 @@ class _RatingScreenState extends State<RatingScreen> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(
+                            margin: const EdgeInsets.only(
                               top: 20,
                               left: 30,
                               right: 30,
@@ -340,8 +340,8 @@ class _RatingScreenState extends State<RatingScreen> {
                             child: ElevatedButton(
                               onPressed: () {
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
+                              child: const Padding(
+                                padding: EdgeInsets.all(14.0),
                                 child: Text(
                                   'Submit',
                                   style: TextStyle(fontSize: 16),

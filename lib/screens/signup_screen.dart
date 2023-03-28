@@ -43,26 +43,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     Expanded(
                       child: Material(
-                        shape: Border(
+                        shape: const Border(
                           bottom: BorderSide(color: Colors.teal, width: 3.0),
                         ),
                         child: TextButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text(
+                          child: const Text(
                             'LogIn',
                             style: TextStyle(fontSize: 20, color: Colors.grey),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Expanded(
                       child: Material(
-                        shape: Border(
+                        shape: const Border(
                           bottom: BorderSide(color: Colors.green, width: 3.0),
                         ),
                         child: TextButton(
@@ -94,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        TextField(
+                        const TextField(
                           decoration: InputDecoration(
                             hintStyle: kHintStyle,
                             hintText: 'Enter name of business/company',
@@ -102,10 +102,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             border: OutlineInputBorder(),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height:27,
                         ),
-                        TextField(
+                        const TextField(
                           decoration: InputDecoration(
                             hintStyle: kHintStyle,
                             hintText: 'Enter your email address',
@@ -113,10 +113,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             border: OutlineInputBorder(),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 27,
                         ),
-                        TextField(
+                        const TextField(
                           decoration: InputDecoration(
                             hintStyle: kHintStyle,
                             hintText: 'Enter your phone number',
@@ -124,10 +124,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             border: OutlineInputBorder(),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 27,
                         ),
-                        TextField(
+                        const TextField(
                           obscureText: true,
                           obscuringCharacter: '*',
                           decoration: InputDecoration(
@@ -156,21 +156,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         });
                       },
                     ),
-                    Text(
+                    const Text(
                       'I agree with the ',
                       style: TextStyle(fontSize: 18),
                     ),
-                    Text(
+                    const Text(
                       'T&C ',
                       style: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 24, 121, 37)),
                     ),
-                    Text(
+                    const Text(
                       'and ',
                       style: TextStyle(fontSize: 20),
                     ),
-                    Text(
+                    const Text(
                       'Privacy Policy',
                       style: TextStyle(
                           fontSize: 18,
@@ -189,9 +189,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onPressed: () {
                           Navigator.pushNamed(context, '/map_screen');
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: const Text(
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
                             'Sign Up',
                             style: TextStyle(fontSize: 22.5),
                           ),

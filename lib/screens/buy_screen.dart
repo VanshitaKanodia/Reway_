@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import '../custom/bottom_navbar.dart';
-
-class MyOrders extends StatefulWidget {
-  const MyOrders({super.key});
+class BuyScreen extends StatefulWidget {
+  const BuyScreen({super.key});
 
   @override
-  State<MyOrders> createState() => _MyOrdersState();
+  State<BuyScreen> createState() => _BuyScreenState();
 }
 
-class _MyOrdersState extends State<MyOrders> {
+class _BuyScreenState extends State<BuyScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,10 +25,10 @@ class _MyOrdersState extends State<MyOrders> {
               onPressed: () {
                 Navigator.pushNamed(context, '/map_screen');
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.location_pin,
               ),
-              color: Color.fromARGB(255, 105, 105, 105),
+              color: const Color.fromARGB(255, 105, 105, 105),
             )
           ],
           backgroundColor: Colors.white,
@@ -38,13 +37,13 @@ class _MyOrdersState extends State<MyOrders> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               color: Color.fromARGB(255, 105, 105, 105),
             ),
           ),
-          title: Text(
-            'Scheduled Pickups',
+          title: const Text(
+            'Auctions',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.black, fontSize: 25),
           ),
@@ -56,7 +55,7 @@ class _MyOrdersState extends State<MyOrders> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       flex: 4,
                       child: TextField(
                         decoration: InputDecoration(
@@ -76,18 +75,18 @@ class _MyOrdersState extends State<MyOrders> {
                         style: TextStyle(color: Colors.black, fontSize: 25),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     Container(
                       height: 50,
                       width: 50,
-                      color: Color.fromARGB(255, 212, 212, 212),
+                      color: const Color.fromARGB(255, 212, 212, 212),
                       child: IconButton(
                         iconSize: 30,
-                        color: Color.fromARGB(255, 104, 104, 104),
+                        color: const Color.fromARGB(255, 104, 104, 104),
                         onPressed: () {},
-                        icon: Icon(Icons.filter_alt),
+                        icon: const Icon(Icons.filter_alt),
                       ),
                     )
                   ],
@@ -96,8 +95,7 @@ class _MyOrdersState extends State<MyOrders> {
               Expanded(
                 child: ListView.builder(
                   itemCount: 10,
-                  physics: BouncingScrollPhysics(),
-// shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
                   itemBuilder: ((context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -106,7 +104,8 @@ class _MyOrdersState extends State<MyOrders> {
                           Navigator.pushNamed(context, '/info_display');
                         },
                         child: Container(
-                          height: 150,
+                          height: MediaQuery.of(context).size.width / 2.56,
+                          width: MediaQuery.of(context).size.width / 1.56,
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey)),
                           child: Row(
@@ -119,24 +118,28 @@ class _MyOrdersState extends State<MyOrders> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.stretch,
+                                        CrossAxisAlignment.stretch,
                                     children: [
-                                      Image.network(
-                                        'https://blog.ipleaders.in/wp-content/uploads/2020/02/tata_communication_hq_660_100120025251.jpg',
-                                        height: 90,
+                                      Image.asset(
+                                        'assets/image/img_1.png',
+                                        height:
+                                            MediaQuery.of(context).size.width /
+                                                3.62,
                                         fit: BoxFit.fill,
                                       ),
-                                      SizedBox(
-                                        height: 10,
+                                      const SizedBox(
+                                        height: 5,
                                       ),
                                       RatingBar.builder(
-                                        itemSize: 20,
+                                        itemSize:
+                                            MediaQuery.of(context).size.width /
+                                                22,
                                         initialRating: 3,
                                         minRating: 1,
                                         direction: Axis.horizontal,
                                         allowHalfRating: true,
                                         itemCount: 5,
-                                        itemBuilder: (context, _) => Icon(
+                                        itemBuilder: (context, _) => const Icon(
                                           Icons.star,
                                           color: Colors.amber,
                                         ),
@@ -148,8 +151,8 @@ class _MyOrdersState extends State<MyOrders> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
+                              const SizedBox(
+                                width: 5,
                               ),
                               Expanded(
                                 flex: 2,
@@ -157,22 +160,27 @@ class _MyOrdersState extends State<MyOrders> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        child: Text(
-                                          'CYber Mobile Repairer',
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                      Text(
+                                        'Hi-Tech Scrap Dealer',
+                                        style: GoogleFonts.inter(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
                                       ),
-                                      SizedBox(
-                                        height: 15,
+                                      const SizedBox(
+                                        height: 10,
                                       ),
-                                      SizedBox(
-                                        child: Text('A-47 West Patel Nagar'),
+                                      const Text('A-47 West Patel Nagar'),
+                                      const Text(
+                                          'Description : Total - 70Kgs, 3 Refrigerators, 20 Smartphones....'),
+                                      const SizedBox(
+                                        height: 12,
                                       ),
+                                      Text('Minimum Bid : Rs.50000',
+                                          style: GoogleFonts.inter(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500)),
                                     ],
                                   ),
                                 ),
@@ -188,10 +196,7 @@ class _MyOrdersState extends State<MyOrders> {
             ],
           ),
         ),
-
-        bottomNavigationBar: BottomNavbar(),
       ),
     );
   }
 }
-

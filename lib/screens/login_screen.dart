@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../services/google_auth_service.dart';
 
-
 // final FirebaseAuth _auth = FirebaseAuth.instance;
 // final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -15,13 +14,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  
-
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    String _email='';
-    String _password='';
+    String _email = '';
+    String _password = '';
 
     return GestureDetector(
       onTap: () {
@@ -31,17 +28,15 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         body: Center(
-          child:
-          Column(
+          child: Column(
             children: [
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                 child: Image.asset('assets/image/Rewaysamplelogogreen.png',
-                    height: 275,
-                    width : 275, alignment: Alignment.topCenter),
+                    height: 275, width: 275, alignment: Alignment.topCenter),
               ),
-              FaIcon(
+              const FaIcon(
                 FontAwesomeIcons.circleUser,
                 size: 55,
                 color: Color.fromARGB(255, 24, 121, 37),
@@ -64,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             vertical: 0, horizontal: 50),
                         child: TextFormField(
                           validator: (value) {
-                            if(value!.isEmpty) {
+                            if (value!.isEmpty) {
                               return 'Please enter your email';
                             }
                             return null;
@@ -73,13 +68,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             _email = value;
                           },
                           keyboardType: TextInputType.emailAddress,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                           ),
                           decoration: const InputDecoration(
                               hintText: 'Username or Email',
                               hintStyle:
-                              TextStyle(fontSize: 15, letterSpacing: 1.2)),
+                                  TextStyle(fontSize: 15, letterSpacing: 1.2)),
                         ),
                       ),
                       Padding(
@@ -88,93 +83,134 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextFormField(
                           obscureText: true,
                           obscuringCharacter: '*',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 15,
                           ),
-                          validator: (value){
-                            if(value!.isEmpty){
+                          validator: (value) {
+                            if (value!.isEmpty) {
                               return 'Please enter your password';
                             }
                             return null;
                           },
-                          onChanged: (value){
+                          onChanged: (value) {
                             _password = value;
                           },
                           decoration: const InputDecoration(
                               hintText: 'Password',
                               hintStyle:
-                              TextStyle(fontSize: 15, letterSpacing: 1.2)),
+                                  TextStyle(fontSize: 15, letterSpacing: 1.2)),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 30),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // try {
-                              //   final user = await _auth.signInWithEmailAndPassword(
-                              //       email: _email, password: _password
-                              //   );
-                              //   if (user != null) {
-                              //     Navigator.pushNamed(context, '/home');
-                              //   }
-                              //   setState(() {
-                              //     showSpinner = false;
-                              //   });
-                              // }
-                              // catch (e) {
-                              //   print(e);
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/home');
+                            // try {
+                            //   final user = await _auth.signInWithEmailAndPassword(
+                            //       email: _email, password: _password
+                            //   );
+                            //   if (user != null) {
+                            //     Navigator.pushNamed(context, '/home');
                             //   }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: const Text(
-                                'LOG IN',
-                                style: TextStyle(fontSize: 15),
-                              ),
+                            //   setState(() {
+                            //     showSpinner = false;
+                            //   });
+                            // }
+                            // catch (e) {
+                            //   print(e);
+                            //   }
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              'LOG IN',
+                              style: TextStyle(fontSize: 15),
                             ),
                           ),
                         ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 20),
+                            vertical: 30, horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            IconButton(
+                            OutlinedButton(
                               onPressed: () {
                                 signInWithGoogle();
-                                // final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                                // provider.googleLogIn();
-                                // print('Logged in');
-                                // Navigator.pushNamed(context, '/home');
                               },
-                              icon: FaIcon(
-                                FontAwesomeIcons.google,
-                                size: 50,
+                              style: OutlinedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50.0),
+                                  ),
+                                  fixedSize: const Size(60, 60)),
+                              child: Image.network(
+                                  'http://pngimg.com/uploads/google/google_PNG19635.png',
+                                  fit: BoxFit.cover),
+                            ),
+                            const SizedBox(
+                              width: 40,
+                            ),
+                            const Text('or'),
+                            const SizedBox(
+                              width: 40,
+                            ),
+                            OutlinedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, '/login_with_mobile');
+                              },
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50.0)),
+                                fixedSize: const Size(60, 60),
                               ),
-                            ),
-                            SizedBox(
-                              width: 60,
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: FaIcon(
-                                FontAwesomeIcons.whatsapp,
-                                size: 50,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 50,
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: FaIcon(
-                                FontAwesomeIcons.instagram,
-                                size: 50,
+                              child: const FaIcon(
+                                FontAwesomeIcons.mobileScreenButton,
+                                size: 30,
                               ),
                             ),
                           ],
                         ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     IconButton(
+                        //       onPressed: () {
+                        //         signInWithGoogle();
+                        //         // final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                        //         // provider.googleLogIn();
+                        //         // print('Logged in');
+                        //         // Navigator.pushNamed(context, '/home');
+                        //       },
+                        //       icon: FaIcon(
+                        //         FontAwesomeIcons.google,
+                        //         size: 50,
+                        //       ),
+                        //     ),
+                        //     SizedBox(
+                        //       width: 60,
+                        //     ),
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: FaIcon(
+                        //         FontAwesomeIcons.whatsapp,
+                        //         size: 50,
+                        //       ),
+                        //     ),
+                        //     SizedBox(
+                        //       width: 50,
+                        //     ),
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: FaIcon(
+                        //         FontAwesomeIcons.instagram,
+                        //         size: 50,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -182,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
+                            const Text(
                               "Don't have an account? ",
                               style: TextStyle(
                                   fontSize: 20,
@@ -192,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 Navigator.pushNamed(context, '/second');
                               },
-                              child: Text('Sign Up',
+                              child: const Text('Sign Up',
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 29, 93, 158))),
@@ -208,6 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );;
+    );
+    ;
   }
 }

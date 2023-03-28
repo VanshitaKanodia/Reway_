@@ -14,7 +14,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -25,7 +25,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
               Expanded(
                 child: IconButton(
                   iconSize: 30,
-                  icon: Icon(Icons.home),
+                  icon: const Icon(Icons.home),
                   onPressed: (() {
 
                       Navigator.pushNamed(context, '/home');
@@ -33,71 +33,71 @@ class _BottomNavbarState extends State<BottomNavbar> {
                   }),
                 ),
               ),
-              Text('Home'),
+              const Text('Home'),
             ],
           ),
-          Divider(),
+          const Divider(),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 child: IconButton(
                   iconSize: 30,
-                  icon: Icon(Icons.list_alt),
+                  icon: const Icon(Icons.list_alt),
                   onPressed: (() {
                     Navigator.pushNamed(context, '/my_orders');
                   }),
                 ),
               ),
-              Text('Pickups'),
+              const Text('Pickups'),
             ],
           ),
-          Divider(),
+          const Divider(),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 child: IconButton(
                   iconSize: 30,
-                  icon: Icon(Icons.money),
+                  icon: const Icon(Icons.money),
                   onPressed: (() {
                     Navigator.pushNamed(context, '/favorites');
                   }),
                 ),
               ),
-              Text('Auctions'),
+              const Text('Auctions'),
             ],
           ),
-          Divider(),
+          const Divider(),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 child: IconButton(
                   iconSize: 30,
-                  icon: Icon(Icons.inbox_outlined),
+                  icon: const Icon(Icons.inbox_outlined),
                   onPressed: (() {
                     Navigator.pushNamed(context, '/inbox');
                   }),
                 ),
               ),
-              Text('Inbox'),
+              const Text('Inbox'),
             ],
           ),
-          Divider(),
+          const Divider(),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 child: IconButton(
                   iconSize: 30,
-                  icon: Icon(Icons.account_box_sharp),
+                  icon: const Icon(Icons.account_box_sharp),
                   onPressed: (() {
                     Navigator.pushNamed(context, '/account_profile');
                   }),
                 ),
               ),
-              Text('Account'),
+              const Text('Account'),
             ],
           ),
         ],

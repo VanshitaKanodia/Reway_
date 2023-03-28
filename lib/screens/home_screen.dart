@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../custom/bottom_navbar.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -18,8 +16,13 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      child: Center (
-        child: Image.asset('assets/image/Rewaysamplelogogreen.png', alignment: Alignment.topCenter,),
+      child: Scaffold(
+        body: Center(
+          child: Image.asset(
+            'assets/image/Rewaysamplelogogreen.png',
+            alignment: Alignment.topCenter,
+          ),
+        ),
       ),
     );
   }
