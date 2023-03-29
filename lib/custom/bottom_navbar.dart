@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//test commit
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({
     Key? key,
@@ -27,8 +28,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                   iconSize: 30,
                   icon: const Icon(Icons.home),
                   onPressed: (() {
-
-                      Navigator.pushNamed(context, '/home');
+                    Navigator.pushNamed(context, '/home');
                     // Navigator.pushNamed(context, '/home');
                   }),
                 ),
