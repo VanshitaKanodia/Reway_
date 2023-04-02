@@ -1,4 +1,3 @@
-// import 'package:reway/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:reway/screens/account_profile.dart';
@@ -48,7 +47,7 @@ class MyApp extends StatelessWidget {
           '/inbox': (context) => const MyInbox(),
           '/my_orders': (context) => const PickupScreen(),
           '/splash': (context) => const Splash(),
-          '/login_with_mobile': (context) => const LoginWithMobile(),
+          '/login_with_mobile': (context) => LoginWithMobile(),
           '/otp_verification_screen': (context) =>
               const OtpVerificationScreen(),
         });

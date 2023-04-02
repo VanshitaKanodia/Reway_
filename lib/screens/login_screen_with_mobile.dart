@@ -1,17 +1,33 @@
 // ignore_for_file: use_key_in_widget_constructors, no_leading_underscores_for_local_identifiers, unused_import
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:reway/screens/home_screen.dart';
+import 'package:reway/screens/otp_verification_screen.dart';
 import '../services/google_auth_service.dart';
 
-class LoginWithMobile extends StatelessWidget {
-  const LoginWithMobile({super.key});
+
+class LoginWithMobile extends StatefulWidget {
+  static String verify = "";
+
+  const LoginWithMobile({Key? key}) : super(key: key);
 
   @override
+  State<LoginWithMobile> createState() => _LoginWithMobileState();
+}
+
+class _LoginWithMobileState extends State<LoginWithMobile> {
+  var phone = "";
+  @override
+  void initState(){
+    super.initState();
+  }
+  final _formKey = GlobalKey<FormState>();
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -24,7 +40,7 @@ class LoginWithMobile extends StatelessWidget {
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                 child: Image.asset('assets/image/Rewaysamplelogogreen.png',
                     height: 275, width: 275, alignment: Alignment.topCenter),
               ),
@@ -33,6 +49,7 @@ class LoginWithMobile extends StatelessWidget {
                 size: 55,
                 color: Color.fromARGB(255, 24, 121, 37),
               ),
+
               // CircleAvatar(
               //   backgroundImage: NetworkImage(
               //       'https://www.citypng.com/public/uploads/small/11639594314mvt074h0zt5cijvfdn7gqxbrya72bzqulyd5bhqhemb5iasfe7gbydmr2jxk8lcclcp6qrgaoiuiavf4sendwc3jvwadddqmli2d.png'),
@@ -53,6 +70,11 @@ class LoginWithMobile extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 0, horizontal: 50),
                         child: TextFormField(
+                          onChanged: (value)
+                          {
+                            phone = value;
+                            print('chalja bhai');
+                          },
                           keyboardType: TextInputType.number,
                           style: const TextStyle(
                             fontSize: 18,
@@ -60,7 +82,7 @@ class LoginWithMobile extends StatelessWidget {
                           decoration: const InputDecoration(
                               hintText: 'Mobile No.',
                               hintStyle:
-                                  TextStyle(fontSize: 15, letterSpacing: 1.2)),
+                              TextStyle(fontSize: 15, letterSpacing: 1.2)),
                         ),
                       ),
                       // Padding(
@@ -82,9 +104,35 @@ class LoginWithMobile extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 30),
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, '/otp_verification_screen');
+                          onPressed: () async {
+                            await _auth.verifyPhoneNumber(
+                              phoneNumber: '${"+91" + phone}',
+                              //VERIFICTION COMPLETED
+                              verificationCompleted: (PhoneAuthCredential credential) async {
+                                await _auth.signInWithCredential(credential);
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                print('Lode');
+                              },
+                              //VERIFICATION FAILED
+                              verificationFailed: (FirebaseAuthException e) {
+                                if (e.code == 'invalid-phone-number') {
+                                  print('The provided phone number is not valid.');
+                                }
+                                print('$phone');
+                                print('Lag');
+                              },
+                              //CODE SENT
+                              codeSent: (String verificationId, int? resendToken) async {
+                                LoginWithMobile.verify = verificationId;
+
+                                print('Gaye');
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
+                              },
+                              //RETRIEVE CODE
+                              codeAutoRetrievalTimeout: (String verificationId) {
+                                print('Lode lag gaye-_-');
+                              },
+                            );
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),

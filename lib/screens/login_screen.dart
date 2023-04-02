@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-import '../services/google_auth_service.dart';
-
-// final FirebaseAuth _auth = FirebaseAuth.instance;
-// final GoogleSignIn googleSignIn = GoogleSignIn();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,11 +11,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+    ],
+  );
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } catch (error) {
+      print(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    String _email = '';
-    String _password = '';
 
     return GestureDetector(
       onTap: () {
@@ -65,7 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                           onChanged: (value) {
-                            _email = value;
                           },
                           keyboardType: TextInputType.emailAddress,
                           style: const TextStyle(
@@ -93,7 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                           onChanged: (value) {
-                            _password = value;
                           },
                           decoration: const InputDecoration(
                               hintText: 'Password',
@@ -106,20 +113,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/home');
-                            // try {
-                            //   final user = await _auth.signInWithEmailAndPassword(
-                            //       email: _email, password: _password
-                            //   );
-                            //   if (user != null) {
-                            //     Navigator.pushNamed(context, '/home');
-                            //   }
-                            //   setState(() {
-                            //     showSpinner = false;
-                            //   });
-                            // }
-                            // catch (e) {
-                            //   print(e);
-                            //   }
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),
@@ -138,7 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             OutlinedButton(
                               onPressed: () {
-                                signInWithGoogle();
+                                // signInWithGoogle();
+                                _handleSignIn();
                               },
                               style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -245,6 +239,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-    ;
   }
 }

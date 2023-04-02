@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
+import 'package:reway/screens/login_screen_with_mobile.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   const OtpVerificationScreen({super.key});
@@ -16,6 +18,8 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void initState() {
     super.initState();
   }
+  var code = "";
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
             Text(
               'Phone Number Verification',
               style:
-                  GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600),
+              GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(
               height: 10,
@@ -73,7 +77,21 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                try
+                {
+                  PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                      verificationId: LoginWithMobile.verify, smsCode: code);
+
+                  // Sign the user in (or link) with the credential
+                  await _auth.signInWithCredential(credential);
+                  print('Correct otp');
+                }
+                catch(e)
+                {
+                  print('Wrong otp');
+                }
+              },
               child: const Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
@@ -93,15 +111,15 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   Widget darkRoundedPinPut() {
     return Pinput(
-      length: 5,
+      onChanged: (value)
+      {
+        code = value;
+      },
+      length: 6,
       keyboardType: TextInputType.number,
       controller: otpController,
       textInputAction: TextInputAction.next,
       showCursor: true,
-      validator: (s) {
-        print('validating code: $s');
-        print(otpController.text);
-      },
       onCompleted: null,
     );
   }
