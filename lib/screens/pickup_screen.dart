@@ -1,6 +1,6 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PickupScreen extends StatefulWidget {
   const PickupScreen({super.key});
@@ -10,8 +10,12 @@ class PickupScreen extends StatefulWidget {
 }
 
 class _PickupScreenState extends State<PickupScreen> {
+
   @override
   Widget build(BuildContext context) {
+    final ref = FirebaseDatabase.instance.ref().child('details');
+
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -94,7 +98,7 @@ class _PickupScreenState extends State<PickupScreen> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 10,
+                  // itemCount: snapshot.length,
                   physics: const BouncingScrollPhysics(),
 // shrinkWrap: true,
                   itemBuilder: ((context, index) {
@@ -160,25 +164,55 @@ class _PickupScreenState extends State<PickupScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'CYber Mobile Repairer',
-                                        style: GoogleFonts.inter(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600),
+                                      Expanded(
+                                        child: StreamBuilder(
+                                          stream: ref.onValue,
+                                          builder: (context,AsyncSnapshot<DatabaseEvent> snapshot) {
+                                            if (!snapshot.hasData)
+                                            {
+                                              return CircularProgressIndicator();
+                                            }
+                                            else
+                                            {
+                                              Map<dynamic, dynamic> imap = snapshot.data!.snapshot.value as dynamic;
+                                              List<dynamic> list = [];
+                                              list.clear();
+                                              list = imap.values.toList();
+
+                                              return ListView.builder(
+                                                  itemCount: snapshot.data!.snapshot.children.length,
+                                                  itemBuilder: (context, index) {
+                                                    return ListTile(
+                                                      title: Text(list[index]['company']),
+                                                      subtitle: Text(list[index]['address']),
+                                                      trailing: Text(list[index]['email']),
+                                                    );
+                                                  }
+                                              );
+                                            }
+                                          },
+                                        )
                                       ),
-                                      SizedBox(
-                                        height: 7,
-                                      ),
-                                      Text('A-47 West Patel Nagar'),
-                                      const Text(
-                                          'Description : Total - 70Kgs, 3 Refrigerators, 20 Smartphones....'),
-                                      SizedBox(
-                                        height: 12,
-                                      ),
-                                      Text('Minimum Bid : Rs.50000',
-                                          style: GoogleFonts.inter(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500)),
+
+                                      // Text(
+                                      //   'CYber Mobile Repairer',
+                                      //   style: GoogleFonts.inter(
+                                      //       fontSize: 20,
+                                      //       fontWeight: FontWeight.w600),
+                                      // ),
+                                      // SizedBox(
+                                      //   height: 7,
+                                      // ),
+                                      // Text('A-47 West Patel Nagar'),
+                                      // const Text(
+                                      //     'Description : Total - 70Kgs, 3 Refrigerators, 20 Smartphones....'),
+                                      // SizedBox(
+                                      //   height: 12,
+                                      // ),
+                                      // Text('Minimum Bid : Rs.50000',
+                                      //     style: GoogleFonts.inter(
+                                      //         fontSize: 14,
+                                      //         fontWeight: FontWeight.w500)),
                                     ],
                                   ),
                                 ),

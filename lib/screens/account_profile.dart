@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reway/services/google_auth_service.dart';
 
 class AccountProfile extends StatefulWidget {
   const AccountProfile({super.key});
@@ -10,8 +11,8 @@ class AccountProfile extends StatefulWidget {
 class _AccountProfileState extends State<AccountProfile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
+    return Scaffold(
+      body: handleAuthState(),
     );
   }
 }

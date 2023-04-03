@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:reway/screens/home_screen.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _handleSignIn() async {
     try {
       await _googleSignIn.signIn();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } catch (error) {
       print(error);
     }
@@ -130,8 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             OutlinedButton(
-                              onPressed: () {
-                                // signInWithGoogle();
+                              onPressed: () async {
                                 _handleSignIn();
                               },
                               style: OutlinedButton.styleFrom(
