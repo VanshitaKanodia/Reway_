@@ -13,9 +13,11 @@ class _PickupScreenState extends State<PickupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ref = FirebaseDatabase.instance.ref().child('details');
-
-
+    final ref = FirebaseDatabase.instance.ref().child('Details');
+    @override
+    void initState(){
+      super.initState();
+    }
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -168,27 +170,27 @@ class _PickupScreenState extends State<PickupScreen> {
                                         child: StreamBuilder(
                                           stream: ref.onValue,
                                           builder: (context,AsyncSnapshot<DatabaseEvent> snapshot) {
-                                            if (!snapshot.hasData)
-                                            {
-                                              return CircularProgressIndicator();
+                                            if (snapshot.connectionState == ConnectionState.waiting) {
+                                              return Center(child: CircularProgressIndicator());
                                             }
-                                            else
-                                            {
-                                              Map<dynamic, dynamic> imap = snapshot.data!.snapshot.value as dynamic;
+                                            else if (snapshot.hasData && snapshot.data!.snapshot.exists){
+                                              Map<dynamic, dynamic> imap = snapshot.data!.snapshot
+                                                  .value as dynamic;
                                               List<dynamic> list = [];
                                               list.clear();
                                               list = imap.values.toList();
-
                                               return ListView.builder(
                                                   itemCount: snapshot.data!.snapshot.children.length,
                                                   itemBuilder: (context, index) {
                                                     return ListTile(
-                                                      title: Text(list[index]['company']),
-                                                      subtitle: Text(list[index]['address']),
-                                                      trailing: Text(list[index]['email']),
+                                                      title: Text(list[index]['Quantity']),
+                                                      subtitle: Text(list[index]['Image']),
+                                                      trailing: Text(list[index]['Price']),
                                                     );
-                                                  }
-                                              );
+                                                  });
+                                            }
+                                            else {
+                                              return Text('No data found');
                                             }
                                           },
                                         )

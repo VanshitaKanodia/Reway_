@@ -23,6 +23,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -42,14 +43,13 @@ class MyApp extends StatelessWidget {
           '/map_screen': (context) => const MapsScreen(),
           '/info_display': (context) => const InfoDisplayScreen(),
           '/rating': (context) => const RatingScreen(),
-          '/account_profile': (context) => const AccountProfile(),
+          '/account_profile': (context) => AccountProfile(),
           '/favorites': (context) => const BuyScreen(),
           '/inbox': (context) => const MyInbox(),
           '/my_orders': (context) => const PickupScreen(),
           '/splash': (context) => const Splash(),
-          '/login_with_mobile': (context) => LoginWithMobile(),
-          '/otp_verification_screen': (context) =>
-              const OtpVerificationScreen(),
+          '/login_with_mobile': (context) => const LoginWithMobile(),
+          '/otp_verification_screen': (context) => const OtpVerificationScreen(),
         });
   }
 }

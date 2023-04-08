@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
     const HomeScreen(),
     const PickupScreen(),
     const BuyScreen(),
-    const AccountProfile(),
+     AccountProfile(),
   ];
 
   Widget bottomNavigationBar() {

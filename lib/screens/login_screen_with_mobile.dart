@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reway/screens/home_screen.dart';
 import 'package:reway/screens/otp_verification_screen.dart';
 import '../services/google_auth_service.dart';
@@ -150,8 +151,9 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           OutlinedButton(
-                            onPressed: () {
-                              signInWithGoogle();
+                            onPressed: () async {
+                              await signiInWithGoogle();
+                              Navigator.pushNamed(context, '/home');
                             },
                             style: OutlinedButton.styleFrom(
                                 shape: RoundedRectangleBorder(

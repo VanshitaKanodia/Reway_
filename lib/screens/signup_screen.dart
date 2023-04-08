@@ -1,7 +1,9 @@
 // ignore_for_file: avoid_unnecessary_containers
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+
 
 import '../utils/style_constants.dart';
 //import 'package:weee/utils/style_constants.dart';
@@ -20,10 +22,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool selectedScreen = true;
   @override
   Widget build(BuildContext context) {
-    TextEditingController company = TextEditingController();
-    TextEditingController email = TextEditingController();
-    TextEditingController phone = TextEditingController();
-    TextEditingController address = TextEditingController();
+
+
+    String email = "";
+    String password = "";
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -101,7 +104,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           TextField(
-                            controller: company,
                             decoration: InputDecoration(
                               hintStyle: kHintStyle,
                               hintText: 'Enter name of business/company',
@@ -113,7 +115,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             height:27,
                           ),
                           TextField(
-                            controller: email,
+                            onChanged: (value){
+                              email = value;
+                            },
                             decoration: InputDecoration(
                               hintStyle: kHintStyle,
                               hintText: 'Enter your email address',
@@ -125,18 +129,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             height: 27,
                           ),
                           TextField(
-                            controller: phone,
-                            decoration: InputDecoration(
-                              hintStyle: kHintStyle,
-                              hintText: 'Enter your phone number',
-                              labelText: 'Phone',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 27,
-                          ),
-                          TextField(
+                            onChanged: (value){
+                              password = value;
+                            },
                             obscureText: true,
                             obscuringCharacter: '*',
                             decoration: InputDecoration(
@@ -150,13 +145,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             height: 27,
                           ),
                           TextField(
-                            controller: address,
                             decoration: InputDecoration(
                               hintStyle: kHintStyle,
-                              hintText: 'Enter your adress',
-                              labelText: 'Address',
+                              hintText: 'Enter your phone number',
+                              labelText: 'Phone',
                               border: OutlineInputBorder(),
                             ),
+                          ),
+
+                          SizedBox(
+                            height: 27,
                           ),
                         ],
                       ),
@@ -207,25 +205,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
-                          databaseReference.child(DateTime.now().millisecondsSinceEpoch.toString()).set({
-                            'company' : company.text.toString(),
-                            'phone': phone.text.toString(),
-                            'email' : email.text.toString(),
-                            'address' : address.text.toString(),
-                          }).then((value) =>
-                          Navigator.pushNamed(context, '/home')
-                          );
+                        onPressed: () async {
+                          try {
+                            final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                              email: email,
+                              password: password,
+                            );
+                            Navigator.pushNamed(context, '/home');
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'weak-password') {
+                              print('The password provided is too weak.');
+                            } else if (e.code == 'email-already-in-use') {
+                              print('The account already exists for that email.');
+                            }
+                          } catch (e) {
+                            print(e);
+                          }
+
                           // Navigator.pushNamed(context, '/map_screen');
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
+                        child: Text(
                             'Sign Up',
                             style: TextStyle(fontSize: 22.5),
                           ),
-                        ),
-                      ),
+                      )
                     ),
                   ],
                 ),

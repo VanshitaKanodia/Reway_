@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:reway/screens/home_screen.dart';
+import 'package:reway/services/google_auth_service.dart';
+
 
 
 class LoginScreen extends StatefulWidget {
@@ -10,25 +11,14 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
+//
 class _LoginScreenState extends State<LoginScreen> {
-  GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-    ],
-  );
-  Future<void> _handleSignIn() async {
-    try {
-      await _googleSignIn.signIn();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-    } catch (error) {
-      print(error);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
+    String email ="";
+    String password = "";
 
     return GestureDetector(
       onTap: () {
@@ -51,11 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 size: 55,
                 color: Color.fromARGB(255, 24, 121, 37),
               ),
-              // CircleAvatar(
-              //   backgroundImage: NetworkImage(
-              //       'https://www.citypng.com/public/uploads/small/11639594314mvt074h0zt5cijvfdn7gqxbrya72bzqulyd5bhqhemb5iasfe7gbydmr2jxk8lcclcp6qrgaoiuiavf4sendwc3jvwadddqmli2d.png'),
-              //   backgroundColor: Colors.transparent,
-              // ),
 
               Form(
                 key: _formKey,
@@ -75,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                           onChanged: (value) {
+                            email = value;
                           },
                           keyboardType: TextInputType.emailAddress,
                           style: const TextStyle(
@@ -102,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                           onChanged: (value) {
+                            password = value;
                           },
                           decoration: const InputDecoration(
                               hintText: 'Password',
@@ -112,8 +99,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 30),
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/home');
+                          onPressed: () async {
+                            try {
+                              final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                  email: email,
+                                  password: password
+                              );
+                              Navigator.pushNamed(context, '/home');
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'user-not-found') {
+                                print('No user found for that email.');
+                              } else if (e.code == 'wrong-password') {
+                                print('Wrong password provided for that user.');
+                              }
+                            }
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),
@@ -132,7 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             OutlinedButton(
                               onPressed: () async {
-                                _handleSignIn();
+                                await signiInWithGoogle();
+                                Navigator.pushNamed(context, '/home');
                               },
                               style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -167,44 +167,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     IconButton(
-                        //       onPressed: () {
-                        //         signInWithGoogle();
-                        //         // final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                        //         // provider.googleLogIn();
-                        //         // print('Logged in');
-                        //         // Navigator.pushNamed(context, '/home');
-                        //       },
-                        //       icon: FaIcon(
-                        //         FontAwesomeIcons.google,
-                        //         size: 50,
-                        //       ),
-                        //     ),
-                        //     SizedBox(
-                        //       width: 60,
-                        //     ),
-                        //     IconButton(
-                        //       onPressed: () {},
-                        //       icon: FaIcon(
-                        //         FontAwesomeIcons.whatsapp,
-                        //         size: 50,
-                        //       ),
-                        //     ),
-                        //     SizedBox(
-                        //       width: 50,
-                        //     ),
-                        //     IconButton(
-                        //       onPressed: () {},
-                        //       icon: FaIcon(
-                        //         FontAwesomeIcons.instagram,
-                        //         size: 50,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -219,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Color.fromARGB(255, 113, 113, 113)),
                             ),
                             TextButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 Navigator.pushNamed(context, '/second');
                               },
                               child: const Text('Sign Up',
@@ -241,3 +203,5 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+
