@@ -20,7 +20,7 @@ class LoginWithMobile extends StatefulWidget {
 }
 
 class _LoginWithMobileState extends State<LoginWithMobile> {
-  var phone = "";
+  static var phone = "";
   @override
   void initState(){
     super.initState();
@@ -74,7 +74,6 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                           onChanged: (value)
                           {
                             phone = value;
-                            print('chalja bhai');
                           },
                           keyboardType: TextInputType.number,
                           style: const TextStyle(
@@ -112,7 +111,6 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                               verificationCompleted: (PhoneAuthCredential credential) async {
                                 await _auth.signInWithCredential(credential);
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                                print('Lode');
                               },
                               //VERIFICATION FAILED
                               verificationFailed: (FirebaseAuthException e) {
@@ -120,18 +118,15 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                                   print('The provided phone number is not valid.');
                                 }
                                 print('$phone');
-                                print('Lag');
                               },
                               //CODE SENT
                               codeSent: (String verificationId, int? resendToken) async {
                                 LoginWithMobile.verify = verificationId;
-
-                                print('Gaye');
+                                print('sent otp');
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
                               },
                               //RETRIEVE CODE
                               codeAutoRetrievalTimeout: (String verificationId) {
-                                print('Lode lag gaye-_-');
                               },
                             );
                           },
