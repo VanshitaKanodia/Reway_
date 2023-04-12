@@ -5,7 +5,8 @@ import 'package:pinput/pinput.dart';
 import 'package:reway/screens/login_screen_with_mobile.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
-  const OtpVerificationScreen({super.key});
+  final mobileNumber;
+  const OtpVerificationScreen({super.key, this.mobileNumber});
 
   @override
   OtpVerificationScreenState createState() => OtpVerificationScreenState();
@@ -19,6 +20,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
     super.initState();
   }
   var code = "";
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -45,7 +47,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
               height: 10,
             ),
             Text(
-              'Please enter the code sent to 9874569899 ',
+              'Please enter the code sent to +91 ${widget.mobileNumber} ',
               style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -85,6 +87,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
                   // Sign the user in (or link) with the credential
                   await _auth.signInWithCredential(credential);
+                  Navigator.pushNamed(context, '/home');
                   print('Correct otp');
                 }
                 catch(e)

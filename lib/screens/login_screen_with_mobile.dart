@@ -21,6 +21,7 @@ class LoginWithMobile extends StatefulWidget {
 
 class _LoginWithMobileState extends State<LoginWithMobile> {
   static var phone = "";
+
   @override
   void initState(){
     super.initState();
@@ -123,7 +124,7 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                               codeSent: (String verificationId, int? resendToken) async {
                                 LoginWithMobile.verify = verificationId;
                                 print('sent otp');
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => OtpVerificationScreen(mobileNumber: phone,)));
                               },
                               //RETRIEVE CODE
                               codeAutoRetrievalTimeout: (String verificationId) {
