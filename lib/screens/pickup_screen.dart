@@ -1,6 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class PickupScreen extends StatefulWidget {
   const PickupScreen({super.key});
@@ -100,7 +99,6 @@ class _PickupScreenState extends State<PickupScreen> {
               ),
               Expanded(
                 child: ListView.builder(
-                  // itemCount: snapshot.length,
                   physics: const BouncingScrollPhysics(),
 // shrinkWrap: true,
                   itemBuilder: ((context, index) {
@@ -118,107 +116,155 @@ class _PickupScreenState extends State<PickupScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Image.network(
-                                        'https://blog.ipleaders.in/wp-content/uploads/2020/02/tata_communication_hq_660_100120025251.jpg',
-                                        height: 90,
-                                        fit: BoxFit.fill,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      RatingBar.builder(
-                                        itemSize:
-                                            MediaQuery.of(context).size.width /
-                                                22,
-                                        initialRating: 3,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        itemCount: 5,
-                                        itemBuilder: (context, _) => const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          print(rating);
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              // Expanded(
+                              //   flex: 1,
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.all(8.0),
+                              //     child: Column(
+                              //       crossAxisAlignment:
+                              //           CrossAxisAlignment.stretch,
+                              //       children: [
+                              //         Image.network(
+                              //           'https://blog.ipleaders.in/wp-content/uploads/2020/02/tata_communication_hq_660_100120025251.jpg',
+                              //           height: 90,
+                              //           fit: BoxFit.fill,
+                              //         ),
+                              //         const SizedBox(
+                              //           height: 10,
+                              //         ),
+                              //         RatingBar.builder(
+                              //           itemSize:
+                              //               MediaQuery.of(context).size.width /
+                              //                   22,
+                              //           initialRating: 3,
+                              //           minRating: 1,
+                              //           direction: Axis.horizontal,
+                              //           allowHalfRating: true,
+                              //           itemCount: 5,
+                              //           itemBuilder: (context, _) => const Icon(
+                              //             Icons.star,
+                              //             color: Colors.amber,
+                              //           ),
+                              //           onRatingUpdate: (rating) {
+                              //             print(rating);
+                              //           },
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                              // const SizedBox(
+                              //   width: 10,
+                              // ),
+                              // Expanded(
+                              //   flex: 2,
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.all(8.0),
+                              //     child: Column(
+                              //       crossAxisAlignment:
+                              //           CrossAxisAlignment.start,
+                              //       children: [
+                              //         Expanded(
+                              //           child: StreamBuilder(
+                              //             stream: ref.onValue,
+                              //             builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                              //               if (snapshot.connectionState == ConnectionState.waiting) {
+                              //                 return Center(child: CircularProgressIndicator());
+                              //               }
+                              //               else if (snapshot.hasData && snapshot.data!.snapshot.exists){
+                              //                 Map<dynamic, dynamic> imap = snapshot.data!.snapshot
+                              //                     .value as dynamic;
+                              //                 List<dynamic> list = [];
+                              //                 list.clear();
+                              //                 list = imap.values.toList();
+                              //                 return ListView.builder(
+                              //                     itemCount: snapshot.data!.snapshot.children.length,
+                              //                     itemBuilder: (context, index) {
+                              //                       Map thisItem = list[index];
+                              //                       return ListTile(
+                              //                         trailing: Text(thisItem['Weight']) ,
+                              //                         title: Text(thisItem['Start Date']),
+                              //                         // leading: Text(list[index]['Time']),
+                              //                         // leading: Container(
+                              //                         //   // height: 30,
+                              //                         //   // width: 30,
+                              //                         //   child: thisItem.containsKey('image')?Image.network('${thisItem['image']}') : Container(),),
+                              //                         subtitle: Text(thisItem['Address']),
+                              //                       );
+                              //                     });
+                              //               }
+                              //               else {
+                              //                 return Scaffold(
+                              //                   body: Center(child: Text('No data found')),
+                              //                 );
+                              //               }
+                              //             },
+                              //           ),
+                              //         )
+                              //
+                              //         // Text(
+                              //         //   'CYber Mobile Repairer',
+                              //         //   style: GoogleFonts.inter(
+                              //         //       fontSize: 20,
+                              //         //       fontWeight: FontWeight.w600),
+                              //         // ),
+                              //         // SizedBox(
+                              //         //   height: 7,
+                              //         // ),
+                              //         // Text('A-47 West Patel Nagar'),
+                              //         // const Text(
+                              //         //     'Description : Total - 70Kgs, 3 Refrigerators, 20 Smartphones....'),
+                              //         // SizedBox(
+                              //         //   height: 12,
+                              //         // ),
+                              //         // Text('Minimum Bid : Rs.50000',
+                              //         //     style: GoogleFonts.inter(
+                              //         //         fontSize: 14,
+                              //         //         fontWeight: FontWeight.w500)),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+
+
                               Expanded(
                                 flex: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: StreamBuilder(
-                                          stream: ref.onValue,
-                                          builder: (context,AsyncSnapshot<DatabaseEvent> snapshot) {
-                                            if (snapshot.connectionState == ConnectionState.waiting) {
-                                              return Center(child: CircularProgressIndicator());
-                                            }
-                                            else if (snapshot.hasData && snapshot.data!.snapshot.exists){
-                                              Map<dynamic, dynamic> imap = snapshot.data!.snapshot
-                                                  .value as dynamic;
-                                              List<dynamic> list = [];
-                                              list.clear();
-                                              list = imap.values.toList();
-                                              return ListView.builder(
-                                                  itemCount: snapshot.data!.snapshot.children.length,
-                                                  itemBuilder: (context, index) {
-                                                    return ListTile(
-                                                      title: Text(list[index]['Quantity']),
-                                                      subtitle: Text(list[index]['Image']),
-                                                      trailing: Text(list[index]['Price']),
-                                                    );
-                                                  });
-                                            }
-                                            else {
-                                              return Text('No data found');
-                                            }
-                                          },
-                                        )
-                                      ),
-
-                                      // Text(
-                                      //   'CYber Mobile Repairer',
-                                      //   style: GoogleFonts.inter(
-                                      //       fontSize: 20,
-                                      //       fontWeight: FontWeight.w600),
-                                      // ),
-                                      // SizedBox(
-                                      //   height: 7,
-                                      // ),
-                                      // Text('A-47 West Patel Nagar'),
-                                      // const Text(
-                                      //     'Description : Total - 70Kgs, 3 Refrigerators, 20 Smartphones....'),
-                                      // SizedBox(
-                                      //   height: 12,
-                                      // ),
-                                      // Text('Minimum Bid : Rs.50000',
-                                      //     style: GoogleFonts.inter(
-                                      //         fontSize: 14,
-                                      //         fontWeight: FontWeight.w500)),
-                                    ],
-                                  ),
+                                child: StreamBuilder(
+                                  stream: ref.onValue,
+                                  builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return Center(child: CircularProgressIndicator());
+                                    }
+                                    else if (snapshot.hasData && snapshot.data!.snapshot.exists){
+                                      Map<dynamic, dynamic> imap = snapshot.data!.snapshot
+                                          .value as dynamic;
+                                      List<dynamic> list = [];
+                                      list.clear();
+                                      list = imap.values.toList();
+                                      return ListView.builder(
+                                          itemCount: snapshot.data!.snapshot.children.length,
+                                          itemBuilder: (context, index) {
+                                            Map thisItem = list[index];
+                                            return ListTile(
+                                              trailing: Text(thisItem['Weight']) ,
+                                              title: Text(thisItem['Start Date']),
+                                              // leading: Text(list[index]['Time']),
+                                              leading: Container(
+                                                // height: 30,
+                                                // width: 30,
+                                                child: thisItem.containsKey('image')?Image.network('${thisItem['image']}') : Container(),),
+                                              subtitle: Text(thisItem['Address']),
+                                            );
+                                          });
+                                    }
+                                    else {
+                                      return Scaffold(
+                                        body: Center(child: Text('No data found')),
+                                      );
+                                    }
+                                  },
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
