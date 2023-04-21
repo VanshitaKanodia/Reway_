@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'account_profile.dart';
-import 'buy_screen.dart';
+import 'pickups_screen.dart';
 import 'home_screen.dart';
-import 'pickup_screen.dart';
+import 'buy_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -49,11 +49,11 @@ class _HomeState extends State<Home> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.list_alt),
-          label: 'Pickups',
+          label: 'Buy',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.money),
-          label: 'Buy',
+          label: 'Pickups',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_box_sharp),

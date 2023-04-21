@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:reway/screens/account_profile.dart';
-import 'package:reway/screens/buy_screen.dart';
+import 'package:reway/screens/pickups_screen.dart';
 import 'package:reway/screens/home.dart';
 import 'package:reway/screens/info_display_screen.dart';
 import 'package:reway/screens/login_screen.dart';
@@ -9,7 +9,7 @@ import 'package:reway/screens/login_screen_with_mobile.dart';
 import 'package:reway/screens/map_screen.dart';
 import 'package:reway/screens/my_inbox.dart';
 import 'package:reway/screens/otp_verification_screen.dart';
-import 'package:reway/screens/pickup_screen.dart';
+import 'package:reway/screens/buy_screen.dart';
 import 'package:reway/screens/rating_screen.dart';
 import 'package:reway/screens/signup_screen.dart';
 import 'package:reway/splash.dart';

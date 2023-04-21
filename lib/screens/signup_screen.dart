@@ -211,7 +211,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               email: email,
                               password: password,
                             );
-                            Navigator.pushNamed(context, '/');
+                            Navigator.pushNamed(context, '/home');
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {
                               print('The password provided is too weak.');
