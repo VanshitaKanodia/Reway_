@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           '/map_screen': (context) => const MapsScreen(),
           '/info_display': (context) => const InfoDisplayScreen(),
           '/rating': (context) => const RatingScreen(),
-          '/account_profile': (context) => AccountProfile(),
+          '/account_profile': (context) => const AccountProfile(),
           '/favorites': (context) => const BuyScreen(),
           '/inbox': (context) => const MyInbox(),
           '/my_orders': (context) => const PickupScreen(),
