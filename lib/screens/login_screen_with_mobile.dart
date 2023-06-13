@@ -9,7 +9,6 @@ import 'package:reway/screens/home_screen.dart';
 import 'package:reway/screens/otp_verification_screen.dart';
 import '../services/google_auth_service.dart';
 
-
 class LoginWithMobile extends StatefulWidget {
   static String verify = "";
 
@@ -23,9 +22,10 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
   static var phone = "";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
+
   final _formKey = GlobalKey<FormState>();
   FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -42,7 +42,7 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
             children: [
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                 child: Image.asset('assets/image/Rewaysamplelogogreen.png',
                     height: 275, width: 275, alignment: Alignment.topCenter),
               ),
@@ -72,8 +72,7 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 0, horizontal: 50),
                         child: TextFormField(
-                          onChanged: (value)
-                          {
+                          onChanged: (value) {
                             phone = value;
                           },
                           keyboardType: TextInputType.number,
@@ -83,7 +82,7 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                           decoration: const InputDecoration(
                               hintText: 'Mobile No.',
                               hintStyle:
-                              TextStyle(fontSize: 15, letterSpacing: 1.2)),
+                                  TextStyle(fontSize: 15, letterSpacing: 1.2)),
                         ),
                       ),
                       // Padding(
@@ -109,26 +108,38 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                             await _auth.verifyPhoneNumber(
                               phoneNumber: '${"+91" + phone}',
                               //VERIFICTION COMPLETED
-                              verificationCompleted: (PhoneAuthCredential credential) async {
+                              verificationCompleted:
+                                  (PhoneAuthCredential credential) async {
                                 await _auth.signInWithCredential(credential);
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()));
                               },
                               //VERIFICATION FAILED
                               verificationFailed: (FirebaseAuthException e) {
                                 if (e.code == 'invalid-phone-number') {
-                                  print('The provided phone number is not valid.');
+                                  print(
+                                      'The provided phone number is not valid.');
                                 }
                                 print('$phone');
                               },
                               //CODE SENT
-                              codeSent: (String verificationId, int? resendToken) async {
+                              codeSent: (String verificationId,
+                                  int? resendToken) async {
                                 LoginWithMobile.verify = verificationId;
                                 print('sent otp');
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => OtpVerificationScreen(mobileNumber: phone,)));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            OtpVerificationScreen(
+                                              mobileNumber: phone,
+                                            )));
                               },
                               //RETRIEVE CODE
-                              codeAutoRetrievalTimeout: (String verificationId) {
-                              },
+                              codeAutoRetrievalTimeout:
+                                  (String verificationId) {},
                             );
                           },
                           child: const Padding(
@@ -148,8 +159,10 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                         children: [
                           OutlinedButton(
                             onPressed: () async {
-                              await signiInWithGoogle();
-                              Navigator.pushNamed(context, '/home');
+                              signInWithGoogle(context, () {
+                                Navigator.pushNamed(context, '/home');
+                              });
+                              //Navigator.pushNamed(context, '/home');
                             },
                             style: OutlinedButton.styleFrom(
                                 shape: RoundedRectangleBorder(

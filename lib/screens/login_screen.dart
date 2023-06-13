@@ -3,21 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reway/services/google_auth_service.dart';
 
-
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
+
 //
 class _LoginScreenState extends State<LoginScreen> {
-
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    String email ="";
+    String email = "";
     String password = "";
 
     return GestureDetector(
@@ -41,7 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 size: 55,
                 color: Color.fromARGB(255, 24, 121, 37),
               ),
-
               Form(
                 key: _formKey,
                 child: Padding(
@@ -101,10 +98,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             try {
-                              final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                  email: email,
-                                  password: password
-                              );
+                              final credential = await FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                      email: email, password: password);
                               Navigator.pushNamed(context, '/home');
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'user-not-found') {
@@ -131,8 +127,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             OutlinedButton(
                               onPressed: () async {
-                                await signiInWithGoogle();
-                                Navigator.pushNamed(context, '/home');
+                                signInWithGoogle(context, () {
+                                  Navigator.pushNamed(context, '/home');
+                                });
+                                // await signiInWithGoogle().then((value) => {
+                                //   print(value),
+                                //   Navigator.pushNamed(context, '/home')
+                                // });
+                                // Navigator.pushNamed(context, '/home');
                               },
                               style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -203,5 +205,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-
