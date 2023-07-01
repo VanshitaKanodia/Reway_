@@ -1,20 +1,82 @@
 {
   "project_info": {
     "project_number": "278153046142",
+    "firebase_url": "https://reway-4d031-default-rtdb.firebaseio.com",
     "project_id": "reway-4d031",
     "storage_bucket": "reway-4d031.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:278153046142:android:0454e64b9578236a99502f",
+        "mobilesdk_app_id": "1:278153046142:android:c763543c33016e8999502f",
         "android_client_info": {
-          "package_name": "com.example.reway"
+          "package_name": "com.rewaytech.rewayrecyclers"
         }
       },
       "oauth_client": [
         {
-          "client_id": "278153046142-4fn28ff80obiruqf6kr6lt6isope8uvg.apps.googleusercontent.com",
+          "client_id": "278153046142-fv3n5712j1b8jms5ao5vsr5guce9lc9j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rewaytech.rewayrecyclers",
+            "certificate_hash": "29a89e05f884af0e35ef992b62d232f4f887df66"
+          }
+        },
+        {
+          "client_id": "278153046142-gkk1ljc6v4gam8t3vv7v29n38024r5p6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rewaytech.rewayrecyclers",
+            "certificate_hash": "c4df3a4dd92b7909465efd1f3bdab5c2f185c348"
+          }
+        },
+        {
+          "client_id": "278153046142-fh9hqmhko5ooefv4nd5dtdrkbjf1qaie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkYZh38yYBIiEJNnW4SXxR3ln6bbuqySU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278153046142-4fn28ff80obiruqf6kr6lt6isope8uvg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278153046142:android:5f24241409cae1c499502f",
+        "android_client_info": {
+          "package_name": "com.rewaytech.rewayusers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278153046142-69kh6860hq0heo9l4v9og5urq41f3muv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rewaytech.rewayusers",
+            "certificate_hash": "29a89e05f884af0e35ef992b62d232f4f887df66"
+          }
+        },
+        {
+          "client_id": "278153046142-ff7qe848hu2leppih8l64hfj6odvcmuh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rewaytech.rewayusers",
+            "certificate_hash": "0ce2edf44dc7f3c893c13bda5be20636f1870227"
+          }
+        },
+        {
+          "client_id": "278153046142-fh9hqmhko5ooefv4nd5dtdrkbjf1qaie.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
