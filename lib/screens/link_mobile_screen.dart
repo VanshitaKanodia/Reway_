@@ -1,22 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 import '../constants/firebase_const.dart';
-import '../controllers/auth_controller.dart';
-import '../services/google_auth_service.dart';
 
-class LoginWithMobile extends StatefulWidget {
-  const LoginWithMobile({Key? key}) : super(key: key);
+import '../controllers/link_controller.dart';
+
+class LinkMobileScreen extends StatefulWidget {
+  const LinkMobileScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginWithMobile> createState() => _LoginWithMobileState();
+  State<LinkMobileScreen> createState() => _LinkMobileScreenState();
 }
 
-class _LoginWithMobileState extends State<LoginWithMobile> {
-  var controller = Get.put(Authcontroller());
+class _LinkMobileScreenState extends State<LinkMobileScreen> {
+  var controller = Get.put(LinkController());
   @override
   void initState() {
     super.initState();
@@ -28,16 +28,17 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
     auth.authStateChanges().listen((user) {
       currentuser = user;
     });
+    final node = FocusScope.of(context);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
+        appBar: AppBar(),
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         body: Center(
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 Padding(
@@ -46,7 +47,7 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                   child: Image.asset('assets/image/Rewaysamplelogogreen.png',
                       height: 275, width: 275, alignment: Alignment.topCenter),
                 ),
-                "Login With Phone Number"
+                "Link Phone Number"
                     .text
                     .bold
                     .color(Vx.green700)
@@ -116,7 +117,7 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                             visible: controller.isOtpSent.value,
                             child: SizedBox(
                               height: 80,
-                              child: Row(
+                              child:Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
@@ -160,18 +161,25 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                           padding: const EdgeInsets.only(top: 30),
                           child: ElevatedButton(
                             onPressed: () async {
+                              //   if (controller.isOtpSent.value == false) {
+                              //     controller.isOtpSent.value = true;
+                              //     await controller.sendOtp();
+                              //   } else {
+                              //     await controller.linkWithPhoneNumber(context);
+                              //   }
+                              // },
                               try {
                                 if (controller.isOtpSent.value == false) {
                                   controller.isOtpSent.value = true;
                                   await controller.sendOtp();
                                 } else {
                                   await controller
-                                      .verifyOtp(context)
+                                      .linkWithPhoneNumber(context)
                                       .then((value) {
                                     return controller.storePhoneData(context);
                                   }).then((value) {
                                     VxToast.show(context,
-                                        msg: "Logged in with Phone Number");
+                                        msg: "Phone Number Linked");
                                   });
                                 }
                               } on FirebaseAuthException catch (e) {
@@ -197,77 +205,11 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                         const SizedBox(
                           height: 45,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            OutlinedButton(
-                              onPressed: () async {
-                                signInWithGoogle(context, () {
-                                  Navigator.pushNamed(context, '/home');
-                                }).then((value) {
-                                      controller.storeGoogleData(
-                                          context: context, email: googleEmail);
-                                    });
-                              },
-                              style: OutlinedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  fixedSize: const Size(60, 60)),
-                              child: Image.network(
-                                  'http://pngimg.com/uploads/google/google_PNG19635.png',
-                                  fit: BoxFit.cover),
-                            ),
-                            const SizedBox(
-                              width: 40,
-                            ),
-                            const Text('or'),
-                            const SizedBox(
-                              width: 40,
-                            ),
-                            OutlinedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/');
-                              },
-                              style: OutlinedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0)),
-                                fixedSize: const Size(60, 60),
-                              ),
-                              child: const FaIcon(
-                                FontAwesomeIcons.circleUser,
-                                size: 30,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Don't have an account? ",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Color.fromARGB(255, 113, 113, 113)),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/second');
-                              },
-                              child: const Text('Sign Up',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color.fromARGB(255, 29, 93, 158))),
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
                 ),
+               
               ],
             ),
           ),

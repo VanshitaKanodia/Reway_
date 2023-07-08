@@ -1,7 +1,12 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:reway/screens/home.dart';
 import 'package:reway/screens/login_screen.dart';
+
+import 'constants/firebase_const.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -13,17 +18,20 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    gotoNextScreen();
+  }
 
-    Timer(
-      const Duration(seconds: 1),
-      () => Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (BuildContext context) => const LoginScreen(),
-        ),
-      ),
-    );
+  gotoNextScreen() {
+    Future.delayed(const Duration(seconds: 3), () {
+      auth.authStateChanges().listen((User? user) {
+        if (user == null && mounted) {
+          Get.to(() => const LoginScreen());
+        } else {
+          Get.to(() => const Home());
+        }
+      });
+    });
   }
 
   @override

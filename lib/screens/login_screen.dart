@@ -1,7 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:reway/services/google_auth_service.dart';
+import 'package:velocity_x/velocity_x.dart';
+
+import '../constants/firebase_const.dart';
+import '../controllers/auth_controller.dart';
+import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,11 +17,13 @@ class LoginScreen extends StatefulWidget {
 
 //
 class _LoginScreenState extends State<LoginScreen> {
+  var controller = Get.put(Authcontroller());
   @override
   Widget build(BuildContext context) {
+    auth.authStateChanges().listen((user) {
+      currentuser = user;
+    });
     final _formKey = GlobalKey<FormState>();
-    String email = "";
-    String password = "";
 
     return GestureDetector(
       onTap: () {
@@ -32,169 +39,185 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                 child: Image.asset('assets/image/Rewaysamplelogogreen.png',
-                    height: 275, width: 275, alignment: Alignment.topCenter),
+                    height: 275, width: 285, alignment: Alignment.center),
               ),
-              const FaIcon(
+              FaIcon(
                 FontAwesomeIcons.circleUser,
                 size: 55,
-                color: Color.fromARGB(255, 24, 121, 37),
+                color: Color.fromARGB(255, 24, 121, 37).withOpacity(0.8),
               ),
+              10.heightBox,
               Form(
                 key: _formKey,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 1),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 50),
-                        child: TextFormField(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: controller.emailController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Please enter your email';
+                              return "Please enter your username";
+                            } else if (value.length < 6) {
+                              return "Username cannot be less than 6 characters";
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            email = value;
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(
-                            fontSize: 25,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: const BorderSide(
+                                  color: Vx.gray400,
+                                )),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: const BorderSide(
+                                  color: Vx.gray400,
+                                )),
+                            prefixIcon: const Icon(
+                              Icons.person,
+                              color: Colors.green,
+                            ),
+                            labelText: "Username",
+                            hintText: "Enter your Username",
+                            labelStyle: const TextStyle(
+                              color: Vx.gray600,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          decoration: const InputDecoration(
-                              hintText: 'Username or Email',
-                              hintStyle:
-                                  TextStyle(fontSize: 15, letterSpacing: 1.2)),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 50),
-                        child: TextFormField(
+                        10.heightBox,
+                        TextFormField(
+                          controller: controller.passController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Please enter your Password";
+                            } else if (value.length < 6) {
+                              return "password cannot be less than 6 digits";
+                            }
+                            return null;
+                          },
                           obscureText: true,
-                          obscuringCharacter: '*',
-                          style: const TextStyle(
-                            fontSize: 15,
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            password = value;
-                          },
-                          decoration: const InputDecoration(
-                              hintText: 'Password',
-                              hintStyle:
-                                  TextStyle(fontSize: 15, letterSpacing: 1.2)),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            try {
-                              final credential = await FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(
-                                      email: email, password: password);
-                              Navigator.pushNamed(context, '/home');
-                            } on FirebaseAuthException catch (e) {
-                              if (e.code == 'user-not-found') {
-                                print('No user found for that email.');
-                              } else if (e.code == 'wrong-password') {
-                                print('Wrong password provided for that user.');
-                              }
-                            }
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              'LOG IN',
-                              style: TextStyle(fontSize: 15),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: const BorderSide(
+                                  color: Vx.gray400,
+                                )),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: const BorderSide(
+                                  color: Vx.gray400,
+                                )),
+                            prefixIcon: const Icon(
+                              Icons.key,
+                              color: Colors.green,
+                            ),
+                            labelText: "Password",
+                            hintText: "Enter your Password",
+                            labelStyle: const TextStyle(
+                              color: Vx.gray600,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 30, horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            OutlinedButton(
-                              onPressed: () async {
-                                signInWithGoogle(context, () {
-                                  Navigator.pushNamed(context, '/home');
-                                });
-                                // await signiInWithGoogle().then((value) => {
-                                //   print(value),
-                                //   Navigator.pushNamed(context, '/home')
-                                // });
-                                // Navigator.pushNamed(context, '/home');
-                              },
-                              style: OutlinedButton.styleFrom(
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              await controller
+                                  .loginWithEmailPass(context: context)
+                                  .then((value) {
+                                if (value != null) {
+                                  VxToast.show(context, msg: "Logged in");
+                                  Get.offAll(() => Home());
+                                }
+                              });
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Text(
+                                'LOG IN',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ),
+                        20.heightBox,
+                        " Other Login Options:-".text.size(16).make(),
+                        10.heightBox,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              OutlinedButton(
+                                onPressed: () async {
+                                  signInWithGoogle(context, () {
+                                    Navigator.pushNamed(context, '/home');
+                                  });
+                                },
+                                style: OutlinedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    fixedSize: const Size(60, 60)),
+                                child: Image.asset("assets/image/google.png",
+                                    fit: BoxFit.cover),
+                              ),
+                              const SizedBox(
+                                width: 40,
+                              ),
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/login_with_mobile');
+                                },
+                                style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  fixedSize: const Size(60, 60)),
-                              child: Image.network(
-                                  'http://pngimg.com/uploads/google/google_PNG19635.png',
-                                  fit: BoxFit.cover),
-                            ),
-                            const SizedBox(
-                              width: 40,
-                            ),
-                            const Text('or'),
-                            const SizedBox(
-                              width: 40,
-                            ),
-                            OutlinedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/login_with_mobile');
-                              },
-                              style: OutlinedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0)),
-                                fixedSize: const Size(60, 60),
+                                      borderRadius:
+                                          BorderRadius.circular(50.0)),
+                                  fixedSize: const Size(60, 60),
+                                ),
+                                child: const FaIcon(
+                                  FontAwesomeIcons.mobileScreenButton,
+                                  size: 30,
+                                ),
                               ),
-                              child: const FaIcon(
-                                FontAwesomeIcons.mobileScreenButton,
-                                size: 30,
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Don't have an account?",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color.fromARGB(255, 113, 113, 113)),
                               ),
-                            ),
-                          ],
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pushNamed(context, '/second');
+                                },
+                                child: const Text('Sign Up',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color:
+                                            Color.fromARGB(255, 29, 93, 158))),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Don't have an account? ",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 113, 113, 113)),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                Navigator.pushNamed(context, '/second');
-                              },
-                              child: const Text('Sign Up',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Color.fromARGB(255, 29, 93, 158))),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:reway/screens/account_profile.dart';
 import 'package:reway/screens/pickups_screen.dart';
 import 'package:reway/screens/home.dart';
@@ -8,7 +9,6 @@ import 'package:reway/screens/login_screen.dart';
 import 'package:reway/screens/login_screen_with_mobile.dart';
 import 'package:reway/screens/map_screen.dart';
 import 'package:reway/screens/my_inbox.dart';
-import 'package:reway/screens/otp_verification_screen.dart';
 import 'package:reway/screens/buy_screen.dart';
 import 'package:reway/screens/rating_screen.dart';
 import 'package:reway/screens/signup_screen.dart';
@@ -23,11 +23,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         title: 'Reway',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -49,7 +48,8 @@ class MyApp extends StatelessWidget {
           '/my_orders': (context) => const PickupScreen(),
           '/splash': (context) => const Splash(),
           '/login_with_mobile': (context) => const LoginWithMobile(),
-          '/otp_verification_screen': (context) => const OtpVerificationScreen(),
+          // '/otp_verification_screen': (context) =>
+          //     const OtpVerificationScreen(),
         });
   }
 }

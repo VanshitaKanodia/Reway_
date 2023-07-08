@@ -2,7 +2,9 @@ import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class BuyScreen extends StatefulWidget {
   const BuyScreen({super.key});
@@ -12,13 +14,16 @@ class BuyScreen extends StatefulWidget {
 }
 
 class _BuyScreenState extends State<BuyScreen> {
+  late Uri link;
 
   @override
   Widget build(BuildContext context) {
-    final DatabaseReference ref = FirebaseDatabase.instance.ref().child('Pickup').child(FirebaseAuth.instance.currentUser!.uid);
+    final DatabaseReference ref = FirebaseDatabase.instance
+        .ref()
+        .child('Pickup')
+        .child(FirebaseAuth.instance.currentUser!.uid);
     @override
-
-    void initState(){
+    void initState() {
       super.initState();
     }
 
@@ -30,28 +35,9 @@ class _BuyScreenState extends State<BuyScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
-          // actions: [
-          //   IconButton(
-          //     onPressed: () {
-          //       Navigator.pushNamed(context, '/map_screen');
-          //     },
-          //     icon: Icon(
-          //       Icons.location_pin,
-          //     ),
-          //     color: Color.fromARGB(255, 105, 105, 105),
-          //   )
-          // ],
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Color.fromARGB(255, 105, 105, 105),
-            ),
-          ),
           title: Text(
             'Scheduled Pickups',
             textAlign: TextAlign.center,
@@ -108,10 +94,10 @@ class _BuyScreenState extends State<BuyScreen> {
                   builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
-                    }
-                    else if (snapshot.hasData && snapshot.data!.snapshot.exists){
-                      Map<dynamic, dynamic> imap = snapshot.data!.snapshot
-                          .value as dynamic;
+                    } else if (snapshot.hasData &&
+                        snapshot.data!.snapshot.exists) {
+                      Map<dynamic, dynamic> imap =
+                          snapshot.data!.snapshot.value as dynamic;
                       List<dynamic> list = [];
                       list.clear();
                       list = imap.values.toList();
@@ -121,20 +107,14 @@ class _BuyScreenState extends State<BuyScreen> {
                             itemBuilder: (context, index) {
                               Map thisItem = list[index];
                               return Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
                                     children: [
                                       SizedBox(
-                                          height: 100,
-                                          width: 80,
-                                          // child: Image.network(
-                                          //   '${thisItem[index].value['image']}',
-                                          //   fit: BoxFit.cover,
-                                          // )
+                                        height: 100,
+                                        width: 80,
                                       ),
                                     ],
                                   ),
@@ -144,16 +124,15 @@ class _BuyScreenState extends State<BuyScreen> {
                                   Expanded(
                                     child: Column(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           thisItem['Address'] ?? '',
                                           maxLines: 2,
                                           style: const TextStyle(
-                                              fontWeight:
-                                              FontWeight.w400,
+                                              fontWeight: FontWeight.w400,
                                               fontSize: 16),
                                         ),
                                         Text(
@@ -161,10 +140,13 @@ class _BuyScreenState extends State<BuyScreen> {
                                           style: const TextStyle(),
                                         ),
                                         Text(thisItem['Time'] ?? ''),
-                                        Text(thisItem['Start_Date'] ??
-                                            ''),
-                                        Text(
-                                            thisItem['End_Date'] ?? ''),
+                                        Text(thisItem['Start_Date'] ?? ''),
+                                        Text(thisItem['End_Date'] ?? ''),
+                                        20.heightBox,
+                                        Divider(
+                                          color: Vx.gray700,
+                                          thickness: 0.6,
+                                        )
                                       ],
                                     ),
                                   ),
@@ -172,8 +154,7 @@ class _BuyScreenState extends State<BuyScreen> {
                               );
                             }),
                       );
-                    }
-                    else {
+                    } else {
                       return Scaffold(
                         body: Center(child: Text('No data found')),
                       );
@@ -188,4 +169,3 @@ class _BuyScreenState extends State<BuyScreen> {
     );
   }
 }
-
