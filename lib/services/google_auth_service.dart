@@ -3,15 +3,18 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 final GoogleSignIn googleUser = GoogleSignIn(scopes: <String>["email"]);
 
 final GoogleSignIn _googleSignIn = GoogleSignIn();
+String googleEmail = '';
 
 //Sign out
-signOut() async {
+signOut({context}) async {
   await googleUser.signOut();
   await FirebaseAuth.instance.signOut();
+  VxToast.show(context, msg: "Logged out");
 }
 
 Future<void> signInWithGoogle(
@@ -28,9 +31,8 @@ Future<void> signInWithGoogle(
     }
     // Use the `googleUser` object to access the user's name and email
     final String name = googleUser.displayName ?? '';
-    final String email = googleUser.email;
     log('[username]: $name');
-    log('[user-email]: $email');
+    log('[user-email]: $googleEmail');
 
     // Use the `googleUser` object to obtain an authentication token
     final GoogleSignInAuthentication googleAuth =
@@ -52,6 +54,7 @@ Future<void> signInWithGoogle(
       }
       // navigate to home
       onSuccess.call();
+      VxToast.show(context, msg: "Signed In with Google");
     }
     // Navigate to the next screen after the sign-in process is complete
   } on FirebaseAuthException catch (e) {

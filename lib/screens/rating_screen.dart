@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:reway/services/google_auth_service.dart';
-
 class RatingScreen extends StatefulWidget {
   const RatingScreen({super.key});
 
