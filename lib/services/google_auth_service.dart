@@ -31,6 +31,7 @@ Future<void> signInWithGoogle(
     }
     // Use the `googleUser` object to access the user's name and email
     final String name = googleUser.displayName ?? '';
+    googleEmail = googleUser.email;
     log('[username]: $name');
     log('[user-email]: $googleEmail');
 

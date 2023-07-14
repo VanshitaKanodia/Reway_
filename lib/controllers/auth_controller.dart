@@ -1,8 +1,15 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../constants/firebase_const.dart';
 
@@ -15,6 +22,8 @@ class Authcontroller extends GetxController {
   TextEditingController otpcontroller = TextEditingController();
   var ischecked = false.obs;
   String googleEmail = '';
+    var profileImgPath = ''.obs;
+  var profileImagelink = "";
   var isOtpSent = false.obs;
   var formKey = GlobalKey<FormState>();
 
@@ -98,6 +107,7 @@ class Authcontroller extends GetxController {
     await databaseReference.child(currentuser!.uid).update({
       'Recycler_Name': name,
       'password': password,
+       'image_url':'',
       'Username': email,
       'id': currentuser!.uid,
     });
@@ -154,6 +164,7 @@ class Authcontroller extends GetxController {
 
     Map<String, dynamic> updatedData = {
       'phone_no': mobileController.text,
+       'image_url':'',
       'id': currentuser!.uid,
     };
     await databaseReference.child(currentuser!.uid).update(updatedData);
@@ -164,8 +175,72 @@ class Authcontroller extends GetxController {
         FirebaseDatabase.instance.ref(recyclersCollection);
 
     Map<String, dynamic> updatedData = {
+       'image_url':'',
       'Email': email,
     };
     await databaseReference.child(currentuser!.uid).update(updatedData);
+  }
+  storeimage() async {
+    final databaseReference = FirebaseDatabase.instance.ref(recyclersCollection);
+
+    await databaseReference.child(currentuser!.uid).update({
+      'image_url': profileImagelink,
+    });
+  }
+
+  uplaodProfileImage() async {
+    var filename = basename(profileImgPath.value);
+    var destination = "images/${currentuser!.uid}/filename";
+    Reference ref = FirebaseStorage.instance.ref().child(destination);
+    await ref.putFile(File(profileImgPath.value));
+    profileImagelink = await ref.getDownloadURL();
+  }
+
+  selectImagefromGallery(context) async {
+    await Permission.storage.request();
+    await Permission.photos.request();
+    await Permission.camera.request();
+
+    var status = await Permission.photos.status;
+
+    if (status.isGranted) {
+      VxToast.show(context, msg: "Permission Denied");
+    } else {
+      try {
+        final img = await ImagePicker()
+            .pickImage(source: ImageSource.gallery, imageQuality: 70);
+
+        if (img == null) return;
+        profileImgPath.value = img.path;
+
+        VxToast.show(context, msg: "Image selected");
+      } on PlatformException catch (e) {
+        VxToast.show(context, msg: e.toString());
+      }
+    }
+  }
+
+  selectImagefromCamera(context) async {
+    await Permission.storage.request();
+    await Permission.photos.request();
+    await Permission.camera.request();
+
+    var status = await Permission.camera.status;
+
+    if (status.isGranted) {
+      VxToast.show(context, msg: "Permission Denied");
+    } else {
+      try {
+        final img = await ImagePicker()
+            .pickImage(source: ImageSource.camera, imageQuality: 70);
+
+        if (img == null) return;
+        profileImgPath.value = img.path;
+
+        VxToast.show(context, msg: "Image selected");
+      } on PlatformException catch (e) {
+        VxToast.show(context, msg: e.toString());
+      }
+    }
   }
 }

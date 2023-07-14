@@ -95,6 +95,7 @@ class LinkController extends GetxController {
     await databaseReference.child(currentuser!.uid).update({
       'Recycler_Name': name,
       'password': password,
+       'image_url':'',
       'Username': email,
       'id': currentuser!.uid,
     });
@@ -105,6 +106,7 @@ class LinkController extends GetxController {
 
     Map<String, dynamic> updatedData = {
       'phone_no': mobileController.text,
+       'image_url':'',
       'id': currentuser!.uid,
     };
     await databaseReference.child(currentuser!.uid).update(updatedData);
@@ -114,6 +116,7 @@ class LinkController extends GetxController {
     final databaseReference = FirebaseDatabase.instance.ref(recyclersCollection);
 
     Map<String, dynamic> updatedData = {
+       'image_url':'',
       'Email': email,
     };
     await databaseReference.child(currentuser!.uid).update(updatedData);
