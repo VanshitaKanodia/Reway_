@@ -31,7 +31,7 @@ class _PickupDetailsState extends State<PickupDetails> {
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 18),
               child: Container(
                 child:
-                    "                This order has been marked complete by you"
+                    "              This order has been marked complete by you"
                         .text
                         .make(),
               ),
@@ -106,7 +106,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Tap here to Complete your Order",
+                        "Complete your pickup",
                         style: TextStyle(fontSize: 16),
                       )
                     ],
@@ -216,7 +216,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                           Icon(Icons.location_on),
                           20.widthBox,
                           Text(
-                            "Tap here to get the exact location",
+                            "Location",
                             style: TextStyle(fontSize: 16),
                           )
                         ],
