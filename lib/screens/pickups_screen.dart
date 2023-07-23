@@ -75,7 +75,8 @@ class _BuyScreenState extends State<BuyScreen> {
                         child: ListView.builder(
                             itemCount: listCheck.length,
                             itemBuilder: (context, index) {
-                              if (listCheck[index].value['is_confirmed']) {
+                              if (listCheck[index].value['is_confirmed'] ==
+                                  false) {
                                 count++;
                               }
                               return Padding(
@@ -150,14 +151,7 @@ class _BuyScreenState extends State<BuyScreen> {
                                                             .format(DateTime.parse(
                                                                 listCheck[index]
                                                                         .value[
-                                                                    'Start_Date']))),
-                                                        " - ".text.make(),
-                                                        Text(intl.DateFormat(
-                                                                'd MMMM')
-                                                            .format(DateTime.parse(
-                                                                listCheck[index]
-                                                                        .value[
-                                                                    'End_Date']))),
+                                                                    'Date']))),
                                                       ],
                                                     )
                                                   ],
@@ -175,7 +169,7 @@ class _BuyScreenState extends State<BuyScreen> {
                                             .make(),
                                       ),
                                       Visibility(
-                                          visible: count == list.length,
+                                          visible: count == listCheck.length,
                                           child: Column(
                                             children: [
                                               Divider(
@@ -197,7 +191,7 @@ class _BuyScreenState extends State<BuyScreen> {
                     }
                   },
                 ),
-              )
+              ),
             ],
           ),
         ),

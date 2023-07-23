@@ -26,7 +26,7 @@ class _LinkEmailScreenState extends State<LinkEmailScreen> {
   bool selectedScreen = true;
   @override
   Widget build(BuildContext context) {
-     auth.authStateChanges().listen((user) {
+    auth.authStateChanges().listen((user) {
       currentuser = user;
     });
     var CompNamecontroller = TextEditingController();
@@ -58,7 +58,7 @@ class _LinkEmailScreenState extends State<LinkEmailScreen> {
                         });
                       },
                       child: Text(
-                        'Link Your Email',
+                        'Link Your Username',
                         style: TextStyle(
                             fontSize: 24,
                             color: selectedScreen ? Colors.green : Colors.grey),
@@ -96,12 +96,12 @@ class _LinkEmailScreenState extends State<LinkEmailScreen> {
                           controller: emailcontroller,
                           decoration: InputDecoration(
                             prefixIcon: Icon(
-                              Icons.mail,
+                              Icons.person,
                               color: Colors.green,
                             ),
                             hintStyle: kHintStyle,
-                            hintText: 'Enter your email address',
-                            labelText: 'Email',
+                            hintText: 'Enter your username',
+                            labelText: 'Username',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
                           ),

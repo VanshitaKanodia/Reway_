@@ -1,10 +1,11 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
+import 'package:reway/screens/home.dart';
+import 'package:reway/screens/home_screen.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../constants/firebase_const.dart';
@@ -15,7 +16,7 @@ import 'link_mobile_screen.dart';
 import 'login_screen.dart';
 
 class AccountProfile extends StatefulWidget {
-  const AccountProfile({super.key});
+  AccountProfile({super.key});
 
   @override
   State<AccountProfile> createState() => _AccountProfileState();
@@ -47,6 +48,14 @@ class _AccountProfileState extends State<AccountProfile> {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Get.offAll(() => Home());
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_new_outlined,
+              color: Vx.gray600,
+            )),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -130,21 +139,43 @@ class _AccountProfileState extends State<AccountProfile> {
                               )),
                           5.widthBox,
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await controller.selectImagefromCamera(context);
+                                if (controller
+                                    .profileImgPath.value.isNotEmpty) {
+                                  await controller.uplaodProfileImage();
+                                } else {
+                                  controller.profileImagelink =
+                                      data['image_url'];
+                                }
+                                controller.storeimage();
+                                setState(() {
+                                  VxToast.show(context, msg: "Profile Updated");
+                                });
+                              },
                               icon: Icon(
                                 Icons.camera,
                                 color: Vx.gray600,
                               ))
                         ],
                       ),
-                      "${data['Username']}"
-                          .text
-                          .semiBold
-                          .gray800
-                          .size(18)
-                          .make(),
+                      data['Username'] == null
+                          ? "Username Not Set"
+                              .text
+                              .semiBold
+                              .gray800
+                              .size(18)
+                              .make()
+                          : "${data['Username']}"
+                              .text
+                              .semiBold
+                              .gray800
+                              .size(18)
+                              .make(),
                       10.heightBox,
-                      "${data['Email']}".text.gray800.size(16).make(),
+                      data['Email'] == null
+                          ? "Email Not Set".text.gray800.size(16).make()
+                          : "${data['Email']}".text.gray800.size(16).make(),
                       10.heightBox,
                       Divider(
                         thickness: 6,

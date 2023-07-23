@@ -18,11 +18,18 @@ class PickupDetails extends StatefulWidget {
 }
 
 class _PickupDetailsState extends State<PickupDetails> {
+  static getUserdetails(uid) async {
+    final databaseReference = FirebaseDatabase.instance.ref("Users").child(uid);
+    DatabaseEvent event = await databaseReference.once();
+    return event.snapshot.value;
+  }
+
   late Uri link;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: "Details".text.bold.make(),
       ),
@@ -112,120 +119,163 @@ class _PickupDetailsState extends State<PickupDetails> {
                     ],
                   )),
             ),
-      body: Column(
-        children: [
-          Container(
-              decoration: BoxDecoration(color: Vx.gray200),
-              height: 200,
-              width: context.screenWidth,
-              child: Image.network(
-                widget.data['image'],
-                fit: BoxFit.contain,
-              )),
-          20.heightBox,
-          SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      "Time:".text.bold.black.size(18).make(),
-                      5.widthBox,
-                      ("${widget.data['Time']}"
-                              .replaceAll("[", '')
-                              .replaceAll("]", ''))
-                          .text
-                          .size(18)
-                          .make()
-                    ],
-                  ),
-                ),
-                20.heightBox,
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      "Weight Range:".text.bold.black.size(18).make(),
-                      5.widthBox,
-                      ("${widget.data['Weight']}"
-                              .replaceAll("[", '')
-                              .replaceAll("]", ''))
-                          .text
-                          .size(18)
-                          .make()
-                    ],
-                  ),
-                ),
-                20.heightBox,
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Wrap(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+                decoration: BoxDecoration(color: Vx.gray200),
+                height: 200,
+                width: context.screenWidth,
+                child: Image.network(
+                  widget.data['image'],
+                  fit: BoxFit.contain,
+                )),
+            20.heightBox,
+            SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
                       children: [
-                        "Scheduled Date:".text.bold.black.size(18).make(),
+                        "Time:".text.bold.black.size(18).make(),
                         5.widthBox,
-                        //"${data['Start_Date']}"
-                        (intl.DateFormat('d MMMM').format(
-                                DateTime.parse(widget.data['Start_Date'])))
-                            .text
-                            .size(18)
-                            .make(),
-                        (" - ").text.semiBold.size(18).make(),
-                        (intl.DateFormat('d MMMM (y)').format(
-                                DateTime.parse(widget.data['End_Date'])))
+                        ("${widget.data['Time']}"
+                                .replaceAll("[", '')
+                                .replaceAll("]", ''))
                             .text
                             .size(18)
                             .make()
                       ],
                     ),
                   ),
-                ),
-                20.heightBox,
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Wrap(
-                    children: [
-                      "Address:".text.bold.black.size(18).make(),
-                      5.widthBox,
-                      ("${widget.data['Address']}").text.size(18).make()
-                    ],
+                  20.heightBox,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        "Weight:".text.bold.black.size(18).make(),
+                        5.widthBox,
+                        ("${widget.data['Weight']}"
+                                .replaceAll("[", '')
+                                .replaceAll("]", ''))
+                            .text
+                            .size(18)
+                            .make()
+                      ],
+                    ),
                   ),
-                ),
-                20.heightBox,
-                10.heightBox,
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        padding: EdgeInsets.all(12),
-                      ),
-                      onPressed: () async {
-                        link = Uri.parse(widget.data["Address Link"]);
-                        if (await canLaunchUrl(link)) {
-                          launchUrl(link);
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                  20.heightBox,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Wrap(
                         children: [
-                          Icon(Icons.location_on),
-                          20.widthBox,
-                          Text(
-                            "Location",
-                            style: TextStyle(fontSize: 16),
-                          )
+                          "Scheduled Date:".text.bold.black.size(18).make(),
+                          5.widthBox,
+                          //"${data['Start_Date']}"
+                          (intl.DateFormat('d MMMM')
+                                  .format(DateTime.parse(widget.data['Date'])))
+                              .text
+                              .size(18)
+                              .make(),
                         ],
-                      )),
-                ),
-              ],
-            ),
-          )
-        ],
+                      ),
+                    ),
+                  ),
+                  20.heightBox,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Wrap(
+                      children: [
+                        "Address:".text.bold.black.size(18).make(),
+                        5.widthBox,
+                        ("${widget.data['Address']}").text.size(18).make()
+                      ],
+                    ),
+                  ),
+                  FutureBuilder(
+                      future: getUserdetails(widget.data['uid']),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          var data = snapshot.data;
+                          return  Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  Wrap(
+                                    children: [
+                                      "Company Details: "
+                                          .text
+                                          .bold
+                                          .black
+                                          .size(18)
+                                          .make(),
+                                      5.widthBox,
+                                      ("${data['comp_name']}")
+                                          .text
+                                          .size(18)
+                                          .make(),
+                                    ],
+                                  ),
+                                  IconButton(
+                                      onPressed: () async {
+                                        link = Uri.parse(("tel:+91" +
+                                            "${data['phone_no']}"));
+                                        if (await canLaunchUrl(link)) {
+                                          launchUrl(link);
+                                        }
+                                      },
+                                      icon: Icon(
+                                        Icons.call,
+                                        color: Colors.green,
+                                      ))
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                      }),
+                  10.heightBox,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                          padding: EdgeInsets.all(12),
+                        ),
+                        onPressed: () async {
+                          link = Uri.parse(widget.data["Address Link"]);
+                          if (await canLaunchUrl(link)) {
+                            launchUrl(link);
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.location_on),
+                            20.widthBox,
+                            Text(
+                              "Location",
+                              style: TextStyle(fontSize: 16),
+                            )
+                          ],
+                        )),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
