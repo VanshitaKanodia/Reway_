@@ -15,13 +15,16 @@ import 'package:reway/screens/my_inbox.dart';
 import 'package:reway/screens/buy_screen.dart';
 import 'package:reway/screens/rating_screen.dart';
 import 'package:reway/screens/signup_screen.dart';
+import 'package:reway/services/firebase_messaging_services.dart';
 import 'package:reway/services/googlesheets.dart';
 import 'package:reway/splash.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SheetsFlutter.init();
+
   await Firebase.initializeApp();
+  FirebaseMessages.getFirebaseMessagingToken();
   // Pass all uncaught "fatal" errors from the framework to Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 

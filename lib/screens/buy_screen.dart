@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:reway/constants/firebase_const.dart';
 import 'package:reway/screens/home.dart';
+import 'package:reway/services/firebase_messaging_services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:intl/intl.dart' as intl;
@@ -192,179 +193,174 @@ class _PickupScreenState extends State<PickupScreen> {
                                                           icon: (Icons.call),
                                                         )
                                                       ]),
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                                title: const Text(
-                                                                    'Pickup'),
-                                                                content:
-                                                                    SingleChildScrollView(
+                                                  child: FutureBuilder(
+                                                      future: getUserdetails(
+                                                          listCheck[index]
+                                                              .value['uid']),
+                                                      builder: (context,
+                                                          AsyncSnapshot
+                                                              snapshot) {
+                                                        if (!snapshot.hasData) {
+                                                          return Center(
+                                                            child:
+                                                                CircularProgressIndicator(),
+                                                          );
+                                                        } else {
+                                                          var data =
+                                                              snapshot.data;
+                                                          return InkWell(
+                                                            onTap: () {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return AlertDialog(
+                                                                        title: const Text(
+                                                                            'Pickup'),
+                                                                        content:
+                                                                            SingleChildScrollView(
+                                                                          child:
+                                                                              ListBody(
+                                                                            children: [
+                                                                              Text("Date : ${DateFormat("dd-MM-yy").format(DateTime.parse(listCheck[index].value['Date'] ?? ''))}"),
+                                                                              const SizedBox(
+                                                                                height: 10,
+                                                                              ),
+                                                                              TextButton(
+                                                                                onPressed: () async {
+                                                                                  link = Uri.parse(listCheck[index].value['Order_list']);
+                                                                                  if (await canLaunchUrl(link)) {
+                                                                                    launchUrl(link, mode: LaunchMode.externalApplication);
+                                                                                  }
+                                                                                },
+                                                                                child: Text(
+                                                                                  "Order List : ${listCheck[index].value['Order_list_name']}",
+                                                                                  selectionColor: Colors.black,
+                                                                                ),
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 10,
+                                                                              ),
+                                                                              Text(
+                                                                                'Time : ${listCheck[index].value['Time']}'.replaceAll('[', '').replaceAll(']', ''),
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+                                                                              Text("Address : ${listCheck[index].value['Address'] ?? ''}"),
+                                                                              const SizedBox(
+                                                                                height: 10,
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        actions: [
+                                                                          ElevatedButton(
+                                                                            child:
+                                                                                const Text('Confirm'),
+                                                                            onPressed:
+                                                                                () async {
+                                                                              await FirebaseDatabase.instance.ref("Details").child(listCheck[index].value['uid']).child(listCheck[index].value['dateUid'].toString()).update({
+                                                                                'is_confirmed': true,
+                                                                                'recycler_uid': currentuser!.uid.toString(),
+                                                                              }).then((value) {
+                                                                                Get.to(() => Home());
+                                                                                VxToast.show(context, msg: "Order Confirmed");
+                                                                              }).then((value) {
+                                                                                FirebaseMessages.setRecyclerToken();
+                                                                              });
+                                                                              Navigator.of(context).pop();
+                                                                              FirebaseMessages.sendNotification(title: "Confirmed!", token: data['push_token'], msg: "Your Pickup was confirmed!");
+                                                                            },
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                0,
+                                                                          ),
+                                                                          TextButton(
+                                                                            child:
+                                                                                const Text('Cancel'),
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                          ),
+                                                                        ]);
+                                                                  });
+                                                            },
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                SizedBox(
+                                                                  height: 60,
+                                                                  width: 60,
                                                                   child:
-                                                                      ListBody(
+                                                                      CircleAvatar(
+                                                                    radius: 50,
+                                                                    backgroundImage:
+                                                                        NetworkImage(
+                                                                            '${listCheck[index].value['image']}'),
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                  width: 10,
+                                                                ),
+                                                                Expanded(
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
                                                                     children: [
                                                                       Text(
-                                                                          "Date : ${DateFormat("dd-MM-yy").format(DateTime.parse(listCheck[index].value['Date'] ?? ''))}"),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            10,
+                                                                        listCheck[index].value['Address'] ??
+                                                                            '',
+                                                                        maxLines:
+                                                                            2,
+                                                                        style: const TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.w400,
+                                                                            fontSize: 16),
                                                                       ),
-                                                                      Text("Estimated Weight : ${listCheck[index].value['Weight']}"
+                                                                      // "${listCheck[index].value['Weight']}"
+                                                                      //     .replaceAll(
+                                                                      //         '[', '')
+                                                                      //     .replaceAll(
+                                                                      //         ']', '')
+                                                                      //     .text
+                                                                      //     .make(),
+                                                                      "${listCheck[index].value['Time']}"
                                                                           .replaceAll(
                                                                               '[',
                                                                               '')
                                                                           .replaceAll(
                                                                               ']',
-                                                                              '')),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            10,
-                                                                      ),
-                                                                      Text(
-                                                                        'Time : ${listCheck[index].value['Time']}'
-                                                                            .replaceAll('[',
-                                                                                '')
-                                                                            .replaceAll(']',
-                                                                                ''),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            15,
-                                                                      ),
-                                                                      Text(
-                                                                          "Address : ${listCheck[index].value['Address'] ?? ''}"),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            10,
-                                                                      ),
+                                                                              '')
+                                                                          .text
+                                                                          .make(),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(intl.DateFormat('d MMMM')
+                                                                              .format(DateTime.parse(listCheck[index].value['Date']))),
+                                                                        ],
+                                                                      )
                                                                     ],
                                                                   ),
                                                                 ),
-                                                                actions: [
-                                                                  ElevatedButton(
-                                                                    child: const Text(
-                                                                        'Confirm'),
-                                                                    onPressed:
-                                                                        () async {
-                                                                      await FirebaseDatabase
-                                                                          .instance
-                                                                          .ref(
-                                                                              "Details")
-                                                                          .child(listCheck[index].value[
-                                                                              'uid'])
-                                                                          .child(listCheck[index]
-                                                                              .value['dateUid']
-                                                                              .toString())
-                                                                          .update({
-                                                                        'is_confirmed':
-                                                                            true,
-                                                                        'recycler_uid': currentuser!
-                                                                            .uid
-                                                                            .toString(),
-                                                                      }).then((value) {
-                                                                        Get.to(() =>
-                                                                            Home());
-                                                                        VxToast.show(
-                                                                            context,
-                                                                            msg:
-                                                                                "Order Confirmed");
-                                                                      });
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    width: 0,
-                                                                  ),
-                                                                  TextButton(
-                                                                    child: const Text(
-                                                                        'Cancel'),
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                ]);
-                                                          });
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 60,
-                                                          width: 60,
-                                                          child: CircleAvatar(
-                                                            radius: 50,
-                                                            backgroundImage:
-                                                                NetworkImage(
-                                                                    '${listCheck[index].value['image']}'),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Expanded(
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                listCheck[index]
-                                                                            .value[
-                                                                        'Address'] ??
-                                                                    '',
-                                                                maxLines: 2,
-                                                                style: const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    fontSize:
-                                                                        16),
-                                                              ),
-                                                              "${listCheck[index].value['Weight']}"
-                                                                  .replaceAll(
-                                                                      '[', '')
-                                                                  .replaceAll(
-                                                                      ']', '')
-                                                                  .text
-                                                                  .make(),
-                                                              "${listCheck[index].value['Time']}"
-                                                                  .replaceAll(
-                                                                      '[', '')
-                                                                  .replaceAll(
-                                                                      ']', '')
-                                                                  .text
-                                                                  .make(),
-                                                              Row(
-                                                                children: [
-                                                                  Text(intl.DateFormat(
-                                                                          'd MMMM')
-                                                                      .format(DateTime.parse(
-                                                                          listCheck[index]
-                                                                              .value['Date']))),
-                                                                ],
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        }
+                                                      }),
                                                 );
                                               }
                                             }),

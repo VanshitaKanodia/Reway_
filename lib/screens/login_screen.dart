@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:reway/services/firebase_messaging_services.dart';
 import 'package:reway/services/google_auth_service.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -145,6 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       VxToast.show(context, msg: "Logged in");
                                       Get.offAll(() => Home());
                                     }
+                                  }).then((value) {
+                                    FirebaseMessages.setRecyclerToken();
                                   });
                                 },
                                 child: const Padding(
@@ -173,6 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         controller.storeGoogleData(
                                             context: context,
                                             email: googleEmail);
+                                      }).then((value) {
+                                        FirebaseMessages.setRecyclerToken();
                                       });
                                       ;
                                     },

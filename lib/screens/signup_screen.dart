@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:reway/services/firebase_messaging_services.dart';
 
 import 'package:velocity_x/velocity_x.dart';
 import '../constants/firebase_const.dart';
@@ -224,6 +225,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 VxToast.show(context,
                                     msg: "User Registered, Signed In");
                                 Get.offAll(() => Home());
+                              }).then((value) {
+                                FirebaseMessages.setRecyclerToken();
                               });
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'weak-password') {

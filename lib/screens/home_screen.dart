@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reway/constants/firebase_const.dart';
 import 'package:reway/screens/suggestion_screen.dart';
+import 'package:reway/services/firebase_messaging_services.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../constants/list.dart';
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseMessages.setRecyclerToken();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());

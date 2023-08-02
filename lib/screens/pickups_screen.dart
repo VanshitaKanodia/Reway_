@@ -134,11 +134,11 @@ class _BuyScreenState extends State<BuyScreen> {
                                                               FontWeight.w400,
                                                           fontSize: 16),
                                                     ),
-                                                    "${listCheck[index].value['Weight']}"
-                                                        .replaceAll('[', '')
-                                                        .replaceAll(']', '')
-                                                        .text
-                                                        .make(),
+                                                    // "${listCheck[index].value['Weight']}"
+                                                    //     .replaceAll('[', '')
+                                                    //     .replaceAll(']', '')
+                                                    //     .text
+                                                    //     .make(),
                                                     "${listCheck[index].value['Time']}"
                                                         .replaceAll('[', '')
                                                         .replaceAll(']', '')

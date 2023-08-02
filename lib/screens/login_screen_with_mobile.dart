@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:reway/services/firebase_messaging_services.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../constants/firebase_const.dart';
@@ -172,6 +173,8 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                                   }).then((value) {
                                     VxToast.show(context,
                                         msg: "Logged in with Phone Number");
+                                  }).then((value) {
+                                    FirebaseMessages.setRecyclerToken();
                                   });
                                 }
                               } on FirebaseAuthException catch (e) {
@@ -205,9 +208,11 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
                                 signInWithGoogle(context, () {
                                   Navigator.pushNamed(context, '/home');
                                 }).then((value) {
-                                      controller.storeGoogleData(
-                                          context: context, email: googleEmail);
-                                    });
+                                  controller.storeGoogleData(
+                                      context: context, email: googleEmail);
+                                }).then((value) {
+                                  FirebaseMessages.setRecyclerToken();
+                                });
                               },
                               style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
