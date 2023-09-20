@@ -212,6 +212,35 @@ class _PickupDetailsState extends State<PickupDetails> {
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
+                  Visibility(
+                    visible: widget.data['description'] != null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Wrap(
+                          children: [
+                            "Order Description:"
+                                .text
+                                .bold
+                                .black
+                                .size(18)
+                                .make(),
+                            5.widthBox,
+                            ("${widget.data['description']}"
+                                    .replaceAll("[", '')
+                                    .replaceAll("]", ''))
+                                .text
+                                .size(18)
+                                .make()
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                      visible: widget.data['description'] != null,
+                      child: 20.heightBox),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(

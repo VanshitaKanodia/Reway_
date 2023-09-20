@@ -272,6 +272,7 @@ class _PickupScreenState extends State<PickupScreen> {
                                                                                       const SizedBox(
                                                                                         height: 10,
                                                                                       ),
+                                                                                      Visibility(visible: listCheck[index].value['description'] != null, child: Text('Description: ${listCheck[index].value['description']}')),
                                                                                       Text(
                                                                                         'Time : ${listCheck[index].value['Time']}'.replaceAll('[', '').replaceAll(']', ''),
                                                                                       ),
