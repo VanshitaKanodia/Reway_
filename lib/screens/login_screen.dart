@@ -160,85 +160,85 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             20.heightBox,
-                            " Other Login Options:-".text.size(16).make(),
-                            10.heightBox,
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  OutlinedButton(
-                                    onPressed: () async {
-                                      signInWithGoogle(context, () {
-                                        Navigator.pushNamed(context, '/home');
-                                      }).then((value) {
-                                        controller.storeGoogleData(
-                                            context: context,
-                                            email: googleEmail);
-                                      }).then((value) {
-                                        FirebaseMessages.setRecyclerToken();
-                                      });
-                                      ;
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0),
-                                        ),
-                                        fixedSize: const Size(60, 60)),
-                                    child: Image.asset(
-                                        "assets/image/google.png",
-                                        fit: BoxFit.cover),
-                                  ),
-                                  const SizedBox(
-                                    width: 40,
-                                  ),
-                                  OutlinedButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/login_with_mobile');
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0)),
-                                      fixedSize: const Size(60, 60),
-                                    ),
-                                    child: const FaIcon(
-                                      FontAwesomeIcons.mobileScreenButton,
-                                      size: 30,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "Don't have an account?",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color:
-                                            Color.fromARGB(255, 113, 113, 113)),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      Navigator.pushNamed(context, '/second');
-                                    },
-                                    child: const Text('Sign Up',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: Color.fromARGB(
-                                                255, 29, 93, 158))),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // " Other Login Options:-".text.size(16).make(),
+                            // 10.heightBox,
+                            // Padding(
+                            //   padding: const EdgeInsets.symmetric(
+                            //       vertical: 10, horizontal: 20),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: [
+                            //       OutlinedButton(
+                            //         onPressed: () async {
+                            //           signInWithGoogle(context, () {
+                            //             Navigator.pushNamed(context, '/home');
+                            //           }).then((value) {
+                            //             controller.storeGoogleData(
+                            //                 context: context,
+                            //                 email: googleEmail);
+                            //           }).then((value) {
+                            //             FirebaseMessages.setRecyclerToken();
+                            //           });
+                            //           ;
+                            //         },
+                            //         style: OutlinedButton.styleFrom(
+                            //             shape: RoundedRectangleBorder(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(50.0),
+                            //             ),
+                            //             fixedSize: const Size(60, 60)),
+                            //         child: Image.asset(
+                            //             "assets/image/google.png",
+                            //             fit: BoxFit.cover),
+                            //       ),
+                            //       const SizedBox(
+                            //         width: 40,
+                            //       ),
+                            //       OutlinedButton(
+                            //         onPressed: () {
+                            //           Navigator.pushNamed(
+                            //               context, '/login_with_mobile');
+                            //         },
+                            //         style: OutlinedButton.styleFrom(
+                            //           shape: RoundedRectangleBorder(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(50.0)),
+                            //           fixedSize: const Size(60, 60),
+                            //         ),
+                            //         child: const FaIcon(
+                            //           FontAwesomeIcons.mobileScreenButton,
+                            //           size: 30,
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
+                            // Padding(
+                            //   padding: const EdgeInsets.symmetric(
+                            //       vertical: 10, horizontal: 10),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: [
+                            //       const Text(
+                            //         "Don't have an account?",
+                            //         style: TextStyle(
+                            //             fontSize: 16,
+                            //             color:
+                            //                 Color.fromARGB(255, 113, 113, 113)),
+                            //       ),
+                            //       TextButton(
+                            //         onPressed: () async {
+                            //           Navigator.pushNamed(context, '/second');
+                            //         },
+                            //         child: const Text('Sign Up',
+                            //             style: TextStyle(
+                            //                 fontSize: 18,
+                            //                 color: Color.fromARGB(
+                            //                     255, 29, 93, 158))),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),

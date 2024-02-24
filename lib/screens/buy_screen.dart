@@ -147,14 +147,27 @@ class _PickupScreenState extends State<PickupScreen> {
                           listCheck.elementAt(0).value['image'];
                         }
                       }
+
                       return Center(
                         child: ListView.builder(
                             itemCount: listCheck.length,
                             itemBuilder: (context, index) {
+                              List<String> orderItem = [];
                               if (listCheck[index].value['is_confirmed'] ==
                                   true) {
                                 count++;
                               }
+
+                              if (listCheck[index].value['Order_list_name'] ==
+                                  "") {
+                                List<Object?> orderList =
+                                    listCheck[index].value['Order_list'];
+                                List<String> items = orderList
+                                    .map((item) => item.toString())
+                                    .toList();
+                                orderItem = items;
+                              }
+
                               return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
@@ -256,18 +269,37 @@ class _PickupScreenState extends State<PickupScreen> {
                                                                                       ),
                                                                                       Align(
                                                                                         alignment: Alignment.centerLeft,
-                                                                                        child: TextButton(
-                                                                                          onPressed: () async {
-                                                                                            link = Uri.parse(listCheck[index].value['Order_list']);
-                                                                                            if (await canLaunchUrl(link)) {
-                                                                                              launchUrl(link, mode: LaunchMode.externalApplication);
-                                                                                            }
-                                                                                          },
-                                                                                          child: Text(
-                                                                                            "Order List : ${listCheck[index].value['Order_list_name']}",
-                                                                                            selectionColor: Colors.black,
-                                                                                          ),
-                                                                                        ),
+                                                                                        child: listCheck[index].value['Order_list_name'] != ''
+                                                                                            ? TextButton(
+                                                                                                onPressed: () async {
+                                                                                                  link = Uri.parse(listCheck[index].value['Order_list']);
+                                                                                                  if (await canLaunchUrl(link)) {
+                                                                                                    launchUrl(link, mode: LaunchMode.externalApplication);
+                                                                                                  }
+                                                                                                },
+                                                                                                child: Text(
+                                                                                                  "Order List : ${listCheck[index].value['Order_list_name']}",
+                                                                                                  selectionColor: Colors.black,
+                                                                                                ),
+                                                                                              )
+                                                                                            : SizedBox(
+                                                                                                height: 100,
+                                                                                                child: Column(
+                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                  children: [
+                                                                                                    Text("Items:-"),
+                                                                                                    Wrap(
+                                                                                                      children: orderItem
+                                                                                                          .map((item) => Wrap(
+                                                                                                                children: [
+                                                                                                                  Text(item),
+                                                                                                                  Text(', '), // Add comma after each item
+                                                                                                                ],
+                                                                                                              ))
+                                                                                                          .toList(),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                )),
                                                                                       ),
                                                                                       const SizedBox(
                                                                                         height: 10,

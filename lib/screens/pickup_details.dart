@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reway/constants/firebase_const.dart';
+import 'package:reway/controllers/auth_controller.dart';
 import 'package:reway/screens/home.dart';
 import 'package:reway/services/firebase_messaging_services.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -26,6 +27,10 @@ class PickupDetails extends StatefulWidget {
 var certificate;
 
 class _PickupDetailsState extends State<PickupDetails> {
+  int points = -1;
+  var sellerUserid;
+  var controller = Get.find<Authcontroller>();
+
   static getUserdetails(uid) async {
     final databaseReference = FirebaseDatabase.instance.ref("Users").child(uid);
     DatabaseEvent event = await databaseReference.once();
@@ -77,6 +82,13 @@ class _PickupDetailsState extends State<PickupDetails> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> orderItem = [];
+    if (widget.data['Order_list_name'] == "") {
+      List<Object?> orderList = widget.data['Order_list'];
+      List<String> items = orderList.map((item) => item.toString()).toList();
+      orderItem = items;
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -92,110 +104,191 @@ class _PickupDetailsState extends State<PickupDetails> {
                         .make(),
               ),
             )
-          : SizedBox(
-              width: context.screenWidth,
-              height: 60,
-              child: FutureBuilder(
-                  future: getRecyclerdetails(widget.data['recycler_uid']),
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      var recyclerData = snapshot.data;
-                      return ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0)),
-                            padding: EdgeInsets.all(12),
-                          ),
-                          onPressed: () {
-                            if (certificate == null) {
-                              VxToast.show(context,
-                                  msg: "Upload Certificate First");
-                              return;
-                            }
-                            showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) => Dialog(
-                                        child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        "Confirm"
-                                            .text
-                                            .bold
-                                            .size(18)
-                                            .color(Vx.gray800)
-                                            .make(),
-                                        const Divider(),
-                                        10.heightBox,
-                                        "Are you sure you want to mark this order as completed?\n This will mean that you have succesfully completed all the requirements of the user who placed the order"
-                                            .text
-                                            .size(16)
-                                            .color(Vx.gray800)
-                                            .make(),
-                                        10.heightBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            customButton(
-                                                color: Colors.green,
-                                                onPress: () async {
-                                                  await FirebaseDatabase
-                                                      .instance
-                                                      .ref("Details")
-                                                      .child(widget.data['uid'])
-                                                      .child(widget
-                                                          .data['dateUid'])
-                                                      .update({
-                                                    'is_completed': true
-                                                  });
-                                                  FirebaseMessages.sendNotification(
-                                                      title: "Order Completed!",
-                                                      msg:
-                                                          "Your Order has been completed",
-                                                      token: recyclerData[
-                                                          'push_token']);
-                                                  Get.offAll(() => Home());
+          : FutureBuilder(
+              future: getUserdetails(widget.data['uid']),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                } else {
+                  var dataOne = snapshot.data;
+                  controller.isindividual.value =
+                      dataOne['type'] == 'INDIVIDUAL' ? true : false;
 
-                                                  VxToast.show(context,
-                                                      msg:
-                                                          "Order marked as complete");
-                                                },
-                                                textColor: Colors.white,
-                                                title: "Yes"),
-                                            customButton(
-                                                color: Colors.green,
-                                                onPress: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                textColor: Colors.white,
-                                                title: "No"),
-                                          ],
-                                        ),
-                                      ],
+                  return SizedBox(
+                    width: context.screenWidth,
+                    height: 60,
+                    child: FutureBuilder(
+                        future: getRecyclerdetails(widget.data['recycler_uid']),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            var recyclerData = snapshot.data;
+                            return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0)),
+                                  padding: EdgeInsets.all(12),
+                                ),
+                                onPressed: () {
+                                  if (!controller.isindividual.value) {
+                                    if (certificate == null) {
+                                      VxToast.show(context,
+                                          msg: "Upload Certificate First");
+                                      return;
+                                    }
+                                  }
+                                  showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context) => Dialog(
+                                              child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              "Confirm"
+                                                  .text
+                                                  .bold
+                                                  .size(18)
+                                                  .color(Vx.gray800)
+                                                  .make(),
+                                              const Divider(),
+                                              10.heightBox,
+                                              "Are you sure you want to mark this order as completed?\n This will mean that you have succesfully completed all the requirements of the user who placed the order"
+                                                  .text
+                                                  .size(16)
+                                                  .color(Vx.gray800)
+                                                  .make(),
+                                              10.heightBox,
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  customButton(
+                                                      color: Colors.green,
+                                                      onPress: () async {
+                                                        await FirebaseDatabase
+                                                            .instance
+                                                            .ref("Details")
+                                                            .child(widget
+                                                                .data['uid'])
+                                                            .child(widget.data[
+                                                                'dateUid'])
+                                                            .update({
+                                                          'is_completed': true
+                                                        });
+                                                        FirebaseMessages.sendNotification(
+                                                            title:
+                                                                "Order Completed!",
+                                                            msg:
+                                                                "Your Order has been completed",
+                                                            token: recyclerData[
+                                                                'push_token']);
+                                                        if (points >= 0) {
+                                                          if (orderItem.contains(
+                                                              "Smartphone")) {
+                                                            points =
+                                                                points + 50;
+                                                          }
+                                                          if (orderItem.contains(
+                                                              "Headphones / Earphones")) {
+                                                            points =
+                                                                points + 20;
+                                                          }
+                                                          if (orderItem.contains(
+                                                              "Laptop / Desktop")) {
+                                                            points =
+                                                                points + 500;
+                                                          }
+                                                          if (orderItem
+                                                              .contains(
+                                                                  "CPU/GPU")) {
+                                                            points =
+                                                                points + 600;
+                                                          }
+                                                          if (orderItem.contains(
+                                                              "Iron Press")) {
+                                                            points =
+                                                                points + 20;
+                                                          }
+                                                          if (orderItem.contains(
+                                                              "Refrigerator")) {
+                                                            points =
+                                                                points + 1000;
+                                                          }
+                                                          if (orderItem.contains(
+                                                              "Washing Machine")) {
+                                                            points =
+                                                                points + 700;
+                                                          }
+                                                          if (orderItem.contains(
+                                                              "Microwave Oven")) {
+                                                            points =
+                                                                points + 650;
+                                                          }
+
+                                                          await FirebaseDatabase
+                                                              .instance
+                                                              .ref(
+                                                                  usercollection)
+                                                              .child(
+                                                                  sellerUserid)
+                                                              .update({
+                                                            'points': points
+                                                          });
+
+                                                          // FirebaseMessages.sendNotification(
+                                                          //     title:
+                                                          //         "50 Points Credited!",
+                                                          //     msg:
+                                                          //         "For successfull order completion",
+                                                          //     token: recyclerData[
+                                                          //         'push_token']);
+                                                        }
+
+                                                        Get.offAll(
+                                                            () => Home());
+
+                                                        VxToast.show(context,
+                                                            msg:
+                                                                "Order marked as complete");
+                                                      },
+                                                      textColor: Colors.white,
+                                                      title: "Yes"),
+                                                  customButton(
+                                                      color: Colors.green,
+                                                      onPress: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      textColor: Colors.white,
+                                                      title: "No"),
+                                                ],
+                                              ),
+                                            ],
+                                          )
+                                                  .box
+                                                  .color(Vx.gray100)
+                                                  .padding(
+                                                      const EdgeInsets.all(12))
+                                                  .roundedSM
+                                                  .make()));
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Complete your pickup",
+                                      style: TextStyle(fontSize: 16),
                                     )
-                                            .box
-                                            .color(Vx.gray100)
-                                            .padding(const EdgeInsets.all(12))
-                                            .roundedSM
-                                            .make()));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Complete your pickup",
-                                style: TextStyle(fontSize: 16),
-                              )
-                            ],
-                          ));
-                    }
-                  }),
-            ),
+                                  ],
+                                ));
+                          }
+                        }),
+                  );
+                }
+              }),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -275,23 +368,52 @@ class _PickupDetailsState extends State<PickupDetails> {
                     padding: const EdgeInsets.all(8.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Wrap(
-                        children: [
-                          "Order List:".text.bold.black.size(18).make(),
-                          5.widthBox,
-                          ("${widget.data['Order_list_name']}")
-                              .text
-                              .size(18)
-                              .make()
-                              .onTap(() async {
-                            link = Uri.parse(widget.data['Order_list']);
-                            if (await canLaunchUrl(link)) {
-                              launchUrl(link,
-                                  mode: LaunchMode.externalApplication);
-                            }
-                          })
-                        ],
-                      ),
+                      child: widget.data['Order_list_name'] != ''
+                          ? Wrap(
+                              children: [
+                                "Order List:".text.bold.black.size(18).make(),
+                                5.widthBox,
+                                ("${widget.data['Order_list_name']}")
+                                    .text
+                                    .size(18)
+                                    .make()
+                                    .onTap(() async {
+                                  link = Uri.parse(widget.data['Order_list']);
+                                  if (await canLaunchUrl(link)) {
+                                    launchUrl(link,
+                                        mode: LaunchMode.externalApplication);
+                                  }
+                                })
+                              ],
+                            )
+                          : SizedBox(
+                              height: 100,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Items:-",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Wrap(
+                                    children: orderItem
+                                        .map((item) => Wrap(
+                                              children: [
+                                                Text(item,
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w400)),
+                                                Text(
+                                                    ', '), // Add comma after each item
+                                              ],
+                                            ))
+                                        .toList(),
+                                  )
+                                ],
+                              )),
                     ),
                   ),
                   20.heightBox,
@@ -336,6 +458,9 @@ class _PickupDetailsState extends State<PickupDetails> {
                           );
                         } else {
                           var data = snapshot.data;
+
+                          points = data['points'];
+                          sellerUserid = data['id'];
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
@@ -351,7 +476,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                                           .size(18)
                                           .make(),
                                       5.widthBox,
-                                      ("${data['comp_name']}")
+                                      ("${data['Company_name']} ")
                                           .text
                                           .size(18)
                                           .make(),
@@ -376,27 +501,34 @@ class _PickupDetailsState extends State<PickupDetails> {
                         }
                       }),
                   10.heightBox,
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16)),
-                          padding: EdgeInsets.all(12),
+                  Builder(builder: (context) {
+                    return Obx(
+                      () => Visibility(
+                        visible: !controller.isindividual.value,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16)),
+                                padding: EdgeInsets.all(12),
+                              ),
+                              onPressed: () {
+                                selectFile();
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Upload Certificate",
+                                    style: TextStyle(fontSize: 16),
+                                  )
+                                ],
+                              )),
                         ),
-                        onPressed: () {
-                          selectFile();
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Upload Certificate",
-                              style: TextStyle(fontSize: 16),
-                            )
-                          ],
-                        )),
-                  ),
+                      ),
+                    );
+                  }),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(

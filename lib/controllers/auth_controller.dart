@@ -24,6 +24,7 @@ class Authcontroller extends GetxController {
   String googleEmail = '';
     var profileImgPath = ''.obs;
   var profileImagelink = "";
+ var isindividual = false.obs;
   var isOtpSent = false.obs;
   var formKey = GlobalKey<FormState>();
 
@@ -112,6 +113,16 @@ class Authcontroller extends GetxController {
       'id': currentuser!.uid,
     });
   }
+
+  updateUserPoints({points}) async {
+    final databaseReference =
+        FirebaseDatabase.instance.ref(usercollection);
+
+    await databaseReference.child(currentuser!.uid).update({
+      'points': points,
+    });
+  }
+
 
   Future<UserCredential?> loginWithEmailPass({context}) async {
     UserCredential? userCredential;
