@@ -1,18 +1,15 @@
-// ignore_for_file: use_key_in_widget_constructors, no_leading_underscores_for_local_identifiers, unused_import
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:reway/screens/home_screen.dart';
-import 'package:reway/screens/otp_verification_screen.dart';
+import 'package:get/get.dart';
+import 'package:reway/services/firebase_messaging_services.dart';
+import 'package:velocity_x/velocity_x.dart';
+
+import '../constants/firebase_const.dart';
+import '../controllers/auth_controller.dart';
 import '../services/google_auth_service.dart';
 
-
 class LoginWithMobile extends StatefulWidget {
-  static String verify = "";
-
   const LoginWithMobile({Key? key}) : super(key: key);
 
   @override
@@ -20,16 +17,18 @@ class LoginWithMobile extends StatefulWidget {
 }
 
 class _LoginWithMobileState extends State<LoginWithMobile> {
-  static var phone = "";
-
+  var controller = Get.put(Authcontroller());
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
+
   final _formKey = GlobalKey<FormState>();
-  FirebaseAuth _auth = FirebaseAuth.instance;
 
   Widget build(BuildContext context) {
+    auth.authStateChanges().listen((user) {
+      currentuser = user;
+    });
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -38,179 +37,244 @@ class _LoginWithMobileState extends State<LoginWithMobile> {
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         body: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                child: Image.asset('assets/image/Rewaysamplelogogreen.png',
-                    height: 275, width: 275, alignment: Alignment.topCenter),
-              ),
-              const FaIcon(
-                FontAwesomeIcons.mobileScreen,
-                size: 55,
-                color: Color.fromARGB(255, 24, 121, 37),
-              ),
-
-              // CircleAvatar(
-              //   backgroundImage: NetworkImage(
-              //       'https://www.citypng.com/public/uploads/small/11639594314mvt074h0zt5cijvfdn7gqxbrya72bzqulyd5bhqhemb5iasfe7gbydmr2jxk8lcclcp6qrgaoiuiavf4sendwc3jvwadddqmli2d.png'),
-              //   backgroundColor: Colors.transparent,
-              // ),
-
-              Form(
-                key: _formKey,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 1),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 45,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 50),
-                        child: TextFormField(
-                          onChanged: (value)
-                          {
-                            phone = value;
-                          },
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                          decoration: const InputDecoration(
-                              hintText: 'Mobile No.',
-                              hintStyle:
-                              TextStyle(fontSize: 15, letterSpacing: 1.2)),
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  child: Image.asset('assets/image/Rewaysamplelogogreen.png',
+                      height: 275, width: 275, alignment: Alignment.topCenter),
+                ),
+                "Login With Phone Number"
+                    .text
+                    .bold
+                    .color(Vx.green700)
+                    .size(16)
+                    .make(),
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 1),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 45,
                         ),
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(
-                      //       vertical: 20, horizontal: 50),
-                      //   child: TextFormField(
-                      //     keyboardType: TextInputType.number,
-                      //     obscureText: false,
-                      //     obscuringCharacter: '*',
-                      //     style: const TextStyle(
-                      //       fontSize: 17,
-                      //     ),
-                      //     decoration: const InputDecoration(
-                      //         hintText: 'OTP',
-                      //         hintStyle:
-                      //             TextStyle(fontSize: 15, letterSpacing: 1.2)),
-                      //   ),
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await _auth.verifyPhoneNumber(
-                              phoneNumber: '${"+91" + phone}',
-                              //VERIFICTION COMPLETED
-                              verificationCompleted: (PhoneAuthCredential credential) async {
-                                await _auth.signInWithCredential(credential);
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                              },
-                              //VERIFICATION FAILED
-                              verificationFailed: (FirebaseAuthException e) {
-                                if (e.code == 'invalid-phone-number') {
-                                  print('The provided phone number is not valid.');
-                                }
-                                print('$phone');
-                              },
-                              //CODE SENT
-                              codeSent: (String verificationId, int? resendToken) async {
-                                LoginWithMobile.verify = verificationId;
-                                print('sent otp');
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => OtpVerificationScreen(mobileNumber: phone,)));
-                              },
-                              //RETRIEVE CODE
-                              codeAutoRetrievalTimeout: (String verificationId) {
-                              },
-                            );
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.all(10.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 20),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Please enter your Number";
+                              } else if (value.length < 10) {
+                                return "Number should be of 10 digits";
+                              }
+                              return null;
+                            },
+                            controller: controller.mobileController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Vx.gray400,
+                                  )),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Vx.gray400,
+                                  )),
+                              prefixIcon: const Icon(
+                                Icons.call,
+                                color: Colors.green,
+                              ),
+                              labelText: "Phone Number",
+                              prefixText: "+91",
+                              hintText: "Enter your phone number",
+                              labelStyle: const TextStyle(
+                                color: Vx.gray600,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        30.heightBox,
+                        Obx(
+                          () => Visibility(
+                            visible: controller.isOtpSent.value,
                             child: Text(
-                              'Send OTP',
-                              style: TextStyle(fontSize: 15),
+                              "Enter Otp",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 45,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          OutlinedButton(
+                        Obx(
+                          () => Visibility(
+                            visible: controller.isOtpSent.value,
+                            child: SizedBox(
+                              height: 80,
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 40,
+                                      width: context.screenWidth - 230,
+                                      child: TextFormField(
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Please enter your Number";
+                                          } else if (value.length < 10) {
+                                            return "Number should be of 10 digits";
+                                          }
+                                          return null;
+                                        },
+                                        controller: controller.otpcontroller,
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: const BorderSide(
+                                                color: Vx.gray400,
+                                              )),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: const BorderSide(
+                                                color: Vx.gray400,
+                                              )),
+                                          labelStyle: const TextStyle(
+                                            color: Vx.gray600,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30),
+                          child: ElevatedButton(
                             onPressed: () async {
-                              await signiInWithGoogle();
-                              Navigator.pushNamed(context, '/home');
+                              try {
+                                if (controller.isOtpSent.value == false) {
+                                  controller.isOtpSent.value = true;
+                                  await controller.sendOtp();
+                                } else {
+                                  await controller
+                                      .verifyOtp(context)
+                                      .then((value) {
+                                    return controller.storePhoneData(context);
+                                  }).then((value) {
+                                    VxToast.show(context,
+                                        msg: "Logged in with Phone Number");
+                                  }).then((value) {
+                                    FirebaseMessages.setRecyclerToken();
+                                  });
+                                }
+                              } on FirebaseAuthException catch (e) {
+                                VxToast.show(context, msg: e.toString());
+                              }
                             },
-                            style: OutlinedButton.styleFrom(
+                            child: Obx(
+                              () => Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: controller.isOtpSent.value
+                                    ? Text(
+                                        'Continue',
+                                        style: TextStyle(fontSize: 15),
+                                      )
+                                    : Text(
+                                        'Send OTP',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 45,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            OutlinedButton(
+                              onPressed: () async {
+                                signInWithGoogle(context, () {
+                                  Navigator.pushNamed(context, '/home');
+                                }).then((value) {
+                                  controller.storeGoogleData(
+                                      context: context, email: googleEmail);
+                                }).then((value) {
+                                  FirebaseMessages.setRecyclerToken();
+                                });
+                              },
+                              style: OutlinedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50.0),
+                                  ),
+                                  fixedSize: const Size(60, 60)),
+                              child: Image.network(
+                                  'http://pngimg.com/uploads/google/google_PNG19635.png',
+                                  fit: BoxFit.cover),
+                            ),
+                            const SizedBox(
+                              width: 40,
+                            ),
+                            const Text('or'),
+                            const SizedBox(
+                              width: 40,
+                            ),
+                            OutlinedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/');
+                              },
+                              style: OutlinedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                ),
-                                fixedSize: const Size(60, 60)),
-                            child: Image.network(
-                                'http://pngimg.com/uploads/google/google_PNG19635.png',
-                                fit: BoxFit.cover),
-                          ),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          const Text('or'),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          OutlinedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/');
-                            },
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0)),
-                              fixedSize: const Size(60, 60),
+                                    borderRadius: BorderRadius.circular(50.0)),
+                                fixedSize: const Size(60, 60),
+                              ),
+                              child: const FaIcon(
+                                FontAwesomeIcons.circleUser,
+                                size: 30,
+                              ),
                             ),
-                            child: const FaIcon(
-                              FontAwesomeIcons.circleUser,
-                              size: 30,
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 35,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Don't have an account? ",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color.fromARGB(255, 113, 113, 113)),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 35,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Don't have an account? ",
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Color.fromARGB(255, 113, 113, 113)),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/second');
-                            },
-                            child: const Text('Sign Up',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color.fromARGB(255, 29, 93, 158))),
-                          ),
-                        ],
-                      )
-                    ],
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/second');
+                              },
+                              child: const Text('Sign Up',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Color.fromARGB(255, 29, 93, 158))),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

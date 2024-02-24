@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:upgrader/upgrader.dart';
+import '../constants/firebase_const.dart';
+import '../custom/exit_dialog.dart';
 import 'account_profile.dart';
 import 'pickups_screen.dart';
 import 'home_screen.dart';
@@ -22,7 +24,7 @@ class _HomeState extends State<Home> {
     const HomeScreen(),
     const PickupScreen(),
     const BuyScreen(),
-     AccountProfile(),
+    AccountProfile(),
   ];
 
   Widget bottomNavigationBar() {
@@ -65,9 +67,25 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: bottomNavigationBar(),
-      body: pages[currentIndex],
+    auth.authStateChanges().listen((user) {
+      currentuser = user;
+    });
+    return WillPopScope(
+      onWillPop: () async {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => exitDialog(context));
+        return false;
+      },
+      child: Scaffold(
+        bottomNavigationBar: bottomNavigationBar(),
+        body: UpgradeAlert(
+            upgrader: Upgrader(
+                durationUntilAlertAgain: const Duration(days: 4),
+                dialogStyle: UpgradeDialogStyle.material),
+            child: pages[currentIndex]),
+      ),
     );
   }
 }

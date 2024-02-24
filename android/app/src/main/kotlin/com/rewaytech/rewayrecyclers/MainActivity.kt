@@ -1,4 +1,4 @@
-package com.example.reway
+package com.rewaytech.rewayrecyclers
 
 import io.flutter.embedding.android.FlutterActivity
 

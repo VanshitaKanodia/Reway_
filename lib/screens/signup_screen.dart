@@ -3,11 +3,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:reway/services/firebase_messaging_services.dart';
 
+import 'package:velocity_x/velocity_x.dart';
+import '../constants/firebase_const.dart';
 
+import '../controllers/auth_controller.dart';
 import '../utils/style_constants.dart';
-//import 'package:weee/utils/style_constants.dart';
-
+import 'home.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,21 +21,24 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  var controller = Get.put(Authcontroller());
+
   final databaseReference = FirebaseDatabase.instance.ref('details');
   bool val = false;
   bool selectedScreen = true;
   @override
   Widget build(BuildContext context) {
-
-
-    String email = "";
-    String password = "";
+    auth.authStateChanges().listen((user) {
+      currentuser = user;
+    });
+    var CompNamecontroller = TextEditingController();
+    var emailcontroller = TextEditingController();
+    var passwordcontroller = TextEditingController();
 
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
-
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
@@ -41,193 +48,208 @@ class _SignUpScreenState extends State<SignUpScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child:Image.asset('assets/image/img.png',
+                child: Image.asset(
+                  'assets/image/img.png',
                   height: 100,
                   width: 100,
-                 // fit: BoxFit.fill,
+                  // fit: BoxFit.fill,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Material(
-                        shape: const Border(
-                          bottom: BorderSide(color: Colors.teal, width: 3.0),
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'LogIn',
-                            style: TextStyle(fontSize: 20, color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Material(
-                        shape: const Border(
-                          bottom: BorderSide(color: Colors.green, width: 3.0),
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            setState(() {
-                              selectedScreen = false;
-                            });
-                          },
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: selectedScreen
-                                    ? Colors.green
-                                    : Colors.grey),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
+                child: Center(
                   child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 18),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          TextField(
-                            decoration: InputDecoration(
-                              hintStyle: kHintStyle,
-                              hintText: 'Enter name of business/company',
-                              labelText: 'Company/Business Name',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(
-                            height:27,
-                          ),
-                          TextField(
-                            onChanged: (value){
-                              email = value;
-                            },
-                            decoration: InputDecoration(
-                              hintStyle: kHintStyle,
-                              hintText: 'Enter your email address',
-                              labelText: 'Email',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 27,
-                          ),
-                          TextField(
-                            onChanged: (value){
-                              password = value;
-                            },
-                            obscureText: true,
-                            obscuringCharacter: '*',
-                            decoration: InputDecoration(
-                              hintStyle: kHintStyle,
-                              hintText: 'Enter your password',
-                              labelText: 'Password',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 27,
-                          ),
-                          TextField(
-                            decoration: InputDecoration(
-                              hintStyle: kHintStyle,
-                              hintText: 'Enter your phone number',
-                              labelText: 'Phone',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-
-                          SizedBox(
-                            height: 27,
-                          ),
-                        ],
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedScreen = false;
+                        });
+                      },
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: selectedScreen ? Colors.green : Colors.grey),
                       ),
                     ),
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 0, left: 10, right: 0, bottom: 9),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Checkbox(
-                      value: val,
-                      onChanged: (value) {
-                        setState(() {
-                          val = value!;
-                        });
-                      },
+              ),
+              SingleChildScrollView(
+                child: Container(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextField(
+                          controller: CompNamecontroller,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.business,
+                              color: Colors.green,
+                            ),
+                            hintStyle: kHintStyle,
+                            hintText: 'Enter name of business/company',
+                            labelText: 'Company/Business Name',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 27,
+                        ),
+                        TextField(
+                          controller: emailcontroller,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.green,
+                            ),
+                            hintStyle: kHintStyle,
+                            hintText: 'Enter your Username',
+                            labelText: 'Username',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 27,
+                        ),
+                        TextField(
+                          controller: passwordcontroller,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.key,
+                              color: Colors.green,
+                            ),
+                            hintStyle: kHintStyle,
+                            hintText: 'Enter your password',
+                            labelText: 'Password',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 27,
+                        ),
+                        20.heightBox,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            "already have an account? ".text.size(16).make(),
+                            "Login".text.bold.size(16).blue400.make().onTap(() {
+                              Get.back();
+                            })
+                          ],
+                        )
+                      ],
                     ),
-                    const Text(
-                      'I agree with the ',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                    const Text(
-                      'T&C ',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Color.fromARGB(255, 24, 121, 37)),
-                    ),
-                    const Text(
-                      'and ',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                    const Text(
-                      'Privacy Policy',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Color.fromARGB(255, 24, 121, 37)),
-                    ),
-                  ],
+                  ),
                 ),
               ),
               Padding(
+                padding: const EdgeInsets.only(
+                    top: 0, left: 10, right: 0, bottom: 9),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Obx(
+                        () => Checkbox(
+                          value: controller.ischecked.value,
+                          onChanged: (value) {
+                            controller.ischecked.value = value ?? false;
+                          },
+                        ),
+                      ),
+                      const Text(
+                        'I agree with the ',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      const Text(
+                        'T&C ',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 24, 121, 37)),
+                      ),
+                      const Text(
+                        'and ',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      const Text(
+                        'Privacy Policy',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 24, 121, 37)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              30.heightBox,
+              Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 13.5),
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                 child: Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(
+                        child: Obx(
+                      () => ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            backgroundColor: controller.ischecked.value
+                                ? Colors.green
+                                : Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    controller.ischecked.value ? 12 : 1))),
                         onPressed: () async {
-                          try {
-                            final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                              email: email,
-                              password: password,
-                            );
-                            Navigator.pushNamed(context, '/home');
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'weak-password') {
-                              print('The password provided is too weak.');
-                            } else if (e.code == 'email-already-in-use') {
-                              print('The account already exists for that email.');
+                          if (controller.ischecked.value) {
+                            try {
+                              await controller
+                                  .signupMethod(
+                                      context: context,
+                                      email: emailcontroller.text,
+                                      password: passwordcontroller.text)
+                                  .then((value) {
+                                return controller.storeUserData(
+                                  email: emailcontroller.text,
+                                  password: passwordcontroller.text,
+                                  name: CompNamecontroller.text,
+                                );
+                              }).then((value) {
+                                VxToast.show(context,
+                                    msg: "User Registered, Signed In");
+                                Get.offAll(() => Home());
+                              }).then((value) {
+                                FirebaseMessages.setRecyclerToken();
+                              });
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'weak-password') {
+                                return VxToast.show(context,
+                                    msg: 'The password provided is too weak.');
+                              } else if (e.code == 'email-already-in-use') {
+                                return VxToast.show(context,
+                                    msg:
+                                        'The account already exists for that Username.');
+                              }
                             }
-                          } catch (e) {
-                            print(e);
+                          } else {
+                            return VxToast.show(context,
+                                msg:
+                                    "Please agree to our T&C and Privacy Policy ");
                           }
                         },
                         child: Text(
-                            'Sign Up',
-                            style: TextStyle(fontSize: 22.5),
-                          ),
-                      )
-                    ),
+                          'Sign Up',
+                          style: TextStyle(fontSize: 22.5),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
